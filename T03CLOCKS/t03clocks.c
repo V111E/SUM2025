@@ -34,7 +34,7 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
   hWnd = 
     CreateWindow(WND_CLASS_NAME,
-    "WOOW",
+    "WOW",
     WS_OVERLAPPEDWINDOW,
     CW_USEDEFAULT, CW_USEDEFAULT,
     CW_USEDEFAULT, CW_USEDEFAULT,
@@ -54,11 +54,9 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
   return msg.wParam;
 }
 
-
-
 VOID DrawEye( HDC hDC, INT X, INT Y, INT R, INT R1, INT Mx, INT My )
 {
-  FLOAT k, len;
+  double k, len;
   INT xc, yc;
 
   len = sqrt((Mx - X) * (Mx - X) + (My - Y) * (My - Y));
@@ -77,84 +75,132 @@ VOID DrawEye( HDC hDC, INT X, INT Y, INT R, INT R1, INT Mx, INT My )
   Ellipse(hDC, X - R, Y - R, X + R, Y + R);
 
   SelectObject( hDC, GetStockObject(DC_BRUSH));
-  SetDCBrushColor(hDC, RGB(0, 100, 0));
+  SetDCBrushColor(hDC, RGB(0, 0, 0));
   Ellipse( hDC, xc - R1 , yc + R1, xc + R1, yc - R1);
 
 }
 
+VOID DrawHand( HDC hDC, INT xc, INT yc , INT len, DOUBLE time, COLORREF Color, POINT *Pnt )
+{
+  DOUBLE pi = 3.14159265359, a;
+  HPEN hPen, hOldPen;
+  //SetDCPenColor(hDC,)
+
+  hPen = CreatePen(PS_SOLID, 7, Color);
+  hOldPen = SelectObject(hDC, hPen);
+  a = (time + time / 60) * pi / 30;
+  MoveToEx(hDC, xc + len * sin(a), yc - len * cos(a), NULL);
+  if (Pnt != NULL)
+    Pnt->x = xc + len * sin(a), Pnt->y = yc - len * cos(a);
+  LineTo(hDC, xc, yc);
+  SelectObject(hDC, GetStockObject(DC_PEN));
+  DeleteObject(hPen);
+}
 
 LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
                                WPARAM wParam, LPARAM lParam )
 {
   HDC hDC;
-  HBITMAP hBm1;
-  BITMAP bm;
   PAINTSTRUCT ps;
-  POINT pt;
-
-  static INT W, H;
-  static HDC hMemDC;
-  static HDC hMemDC1;
-  static HBITMAP hBm;
+  POINT pt, pt1, pt2;
+  SYSTEMTIME st;
+  static INT W, H, size, t, t1, i;
+  static HDC hMemDC, hMemDCClk, hMemDCAnd, hMemDCXor;
+  static BITMAP bm;
+  static HBITMAP hBm, hBmClk, hBmAnd, hBmXor;
 
   switch (Msg)
   {
   case WM_CREATE:
+ 
     hDC = GetDC(hWnd);
     hMemDC = CreateCompatibleDC(hDC);
-    hMemDC1 = CreateCompatibleDC(hDC);
+    hMemDCClk = CreateCompatibleDC(hDC);
+
+    hMemDCAnd = CreateCompatibleDC(hDC);
+    hMemDCXor = CreateCompatibleDC(hDC);
+
     ReleaseDC(hWnd, hDC);
-    SetTimer(hWnd, 0, 1, NULL);
+    hBmClk = LoadImage(NULL, "chas.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+    hBmAnd = LoadImage(NULL, "and.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+    hBmXor = LoadImage(NULL, "xor.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+    SelectObject(hMemDCClk, hBmClk);
+    SelectObject(hMemDCXor, hBmXor);
+    SelectObject(hMemDCAnd, hBmAnd);
+    SetTimer(hWnd, 0, 0.01, NULL);
     return 0;
 
   case WM_SIZE:
-    H = HIWORD(lParam);
+    H = HIWORD(lParam); 
     W = LOWORD(lParam);
+    size = W < H ? W : H;
     if (hBm != NULL)
       DeleteObject(hBm);
     hDC = GetDC(hWnd);
-    hBm1 = CreateCompatibleBitmap(hDC, W, H);
-    hBm1 = LoadImage(NULL, "clockb.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 
     hBm = CreateCompatibleBitmap(hDC, W, H);
     ReleaseDC(hWnd, hDC);
     SelectObject(hMemDC, hBm);
     return 0;
 
-  case WM_LBUTTONDOWN:
-    InvalidateRect(hWnd, NULL, FALSE);
-    return 0;
-
   case WM_PAINT:
+
+    GetLocalTime(&st);
     hDC = BeginPaint(hWnd, &ps);
+    GetObject(hBmClk, sizeof(BITMAP), &bm);
+    SelectObject(hMemDC, GetStockObject(NULL_PEN));
+    SelectObject(hMemDC, GetStockObject(DC_BRUSH));
+    SetDCPenColor(hMemDC, RGB(255, 0, 0));
+    SetDCBrushColor(hMemDC, RGB(100, 100, 100));
+    Rectangle(hMemDC, 0, 0, W + 1, H + 1);
+    SetStretchBltMode(hMemDC, COLORONCOLOR);
+    StretchBlt(hMemDC, (W - size) / 2, (H - size) / 2, size, size, hMemDCClk, 0, 0, bm.bmWidth, bm.bmHeight, SRCCOPY);
+    
+    DrawHand(hMemDC, W / 2, H / 2, size * 0.495, st.wSecond * 60, RGB(0, 255, 0), &pt);
+    DrawHand(hMemDC, W / 2, H / 2, size * 0.446, st.wMinute * 60 , RGB(0, 0, 255), &pt1);
+    DrawHand(hMemDC, W / 2, H / 2, size * 0.336, (st.wHour % 12) * 5, RGB(255, 0, 0), NULL);
+    GetCursorPos(&pt2);
+    ScreenToClient(hWnd, &pt2);
+
+    SetDCBrushColor(hMemDC, RGB(255, 0, 0));
+    DrawEye(hMemDC, W / 2 * 1.6, H / 2 * 1.1, size * 0.05, size * 0.02, pt.x, pt.y);
+    DrawEye(hMemDC, W / 2 * 0.4, H / 2 * 0.9, size * 0.05, size * 0.02, pt1.x, pt1.y);
+    DrawEye(hMemDC, W / 2 * 0.4, H / 2 * 1.1, size * 0.05, size * 0.02, pt2.x, pt2.y);
+
+    GetObject(hBmAnd, sizeof(BITMAP), &bm);
+
+    t = (double)clock() / CLOCKS_PER_SEC * 5;
+
+    for (i = 0; i < 20; i++)
+    {
+      t1 = t - 2 * i;
+      BitBlt(hMemDC, W / 2 + 200 * sin(2 * t1), W / 2 - 500 + 200 * cos(3 * t1), bm.bmWidth, bm.bmHeight, hMemDCAnd, 0, 0, SRCAND);
+      BitBlt(hMemDC, W / 2 + 200 * sin(2 * t1), W / 2 - 500 + 200 * cos(3 * t1), bm.bmWidth, bm.bmHeight, hMemDCXor, 0, 0, SRCINVERT);
+
+    }
     BitBlt(hDC, 0, 0, W, H, hMemDC, 0, 0, SRCCOPY);
     EndPaint(hWnd, &ps);
     return 0;  
   
   case WM_TIMER:
-    GetCursorPos(&pt);
-    ScreenToClient(hWnd, &pt);
-    SelectObject( hMemDC, GetStockObject(DC_BRUSH));
-    SetDCBrushColor(hMemDC, RGB(0, 0, 0));
     Rectangle(hMemDC, 0, 0, W, H);
-    GetObject(hBm, sizeof(BITMAP), &bm);
-    //bm.bmBitsPixel
-    SelectObject(hMemDC, hBm);
-    BitBlt(hMemDC, 0, 0, bm.bmWidth, bm.bmHeight, hMemDC, 0, 0, SRCCOPY);
-
-    SetStretchBltMode(hMemDC, COLORONCOLOR);
-    DrawEye( hMemDC, 1200 + 450 * sin(1 * (double)clock() / CLOCKS_PER_SEC), 700, 90, 47, pt.x, pt.y );
-    DrawEye( hMemDC, 1200 + 450 * cos(1 * (double)clock() / CLOCKS_PER_SEC), 500, 90, 47, pt.x, pt.y );
-    InvalidateRect(hWnd, NULL, FALSE);
+     /* + 250 * sin(1 * (double)clock() / CLOCKS_PER_SEC)*/
+    InvalidateRect(hWnd, NULL, TRUE);
     return 0;
 
   case WM_ERASEBKGND:
     return 0;
 
   case WM_DESTROY:
+    DeleteDC(hMemDCAnd);
+    DeleteDC(hMemDCXor);
+    DeleteObject(hBmAnd);
+    DeleteObject(hBmXor);
+
+    DeleteDC(hMemDCClk);
+    DeleteObject(hBmClk);
     DeleteDC(hMemDC);
     DeleteObject(hBm);
-    DeleteDC(hMemDC);
     KillTimer(hWnd, 0);
     PostQuitMessage(0);
     return 0;  

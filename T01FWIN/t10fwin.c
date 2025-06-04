@@ -53,7 +53,7 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
   hWnd = 
     CreateWindow(WND_CLASS_NAME,
-    "WOOOOOOOOOOOOOOOOOOOOW",
+    "WOOW",
     WS_OVERLAPPEDWINDOW,
     CW_USEDEFAULT, CW_USEDEFAULT,
     CW_USEDEFAULT, CW_USEDEFAULT,
@@ -102,7 +102,7 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
     Ellipse(hDC, 500, 300, 800, 500);
     SelectObject(hDC, GetStockObject(DC_BRUSH));
     SetDCBrushColor(hDC, RGB(0, 100, 0));
-    Ellipse(hDC, 600, 340, 700, 440);
+    Ellipse(hDC, 600, 350, 700, 440);
     EndPaint(hWnd, &ps);
     return 0;
   case WM_DESTROY:
