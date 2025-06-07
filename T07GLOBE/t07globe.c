@@ -1,7 +1,15 @@
+/* FILE NAME: t07globe.c
+ * PROGRAMMER: VE7
+ * DATE: 06.06.2025
+ * PURPOSE: globus
+ */
+
 #include <windows.h>
 #include <math.h>
-
 #include <time.h>
+
+#include "globe.h"
+
 
 
 #define WND_CLASS_NAME "WINDOW"
@@ -34,7 +42,7 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
   hWnd = 
     CreateWindow(WND_CLASS_NAME,
-    "WOOW",
+    "WOW",
     WS_OVERLAPPEDWINDOW,
     CW_USEDEFAULT, CW_USEDEFAULT,
     CW_USEDEFAULT, CW_USEDEFAULT,
@@ -55,105 +63,72 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 }
 
 
-
-VOID DrawEye( HDC hDC, INT X, INT Y, INT R, INT R1, INT Mx, INT My )
-{
-  FLOAT k, len;
-  INT xc, yc;
-
-  len = sqrt((Mx - X) * (Mx - X) + (My - Y) * (My - Y));
-  k = (R - R1) / len;
-  xc = (INT)(X + (Mx - X) * k);
-  yc = (INT)(Y + (My - Y) * k);
-  
-  if (len < (R - R1))
-  {
-    xc = Mx;
-    yc = My;
-  }
-
-  SelectObject( hDC, GetStockObject(DC_BRUSH));
-  SetDCBrushColor(hDC, RGB(215, 215, 215));
-  Ellipse(hDC, X - R, Y - R, X + R, Y + R);
-
-  SelectObject( hDC, GetStockObject(DC_BRUSH));
-  SetDCBrushColor(hDC, RGB(255, 100, 0));
-  Ellipse( hDC, xc - R1 , yc + R1, xc + R1, yc - R1);
-
-}
-
-
 LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
                                WPARAM wParam, LPARAM lParam )
 {
   HDC hDC;
   PAINTSTRUCT ps;
-  POINT pt;
-
-  static INT W, H;
+  static INT W, H, size, t, t1, i;
   static HDC hMemDC;
+  static BITMAP bm;
   static HBITMAP hBm;
 
   switch (Msg)
   {
   case WM_CREATE:
+ 
     hDC = GetDC(hWnd);
     hMemDC = CreateCompatibleDC(hDC);
+    GLB_Init(200);
     ReleaseDC(hWnd, hDC);
-    SetTimer(hWnd, 0, 1, NULL);
+    Rectangle(hMemDC, 0, 0, W + 1, H + 1);
+
+    SetTimer(hWnd, 0, 2, NULL);
     return 0;
 
   case WM_SIZE:
-    H = HIWORD(lParam);
+    H = HIWORD(lParam); 
     W = LOWORD(lParam);
+
     if (hBm != NULL)
       DeleteObject(hBm);
     hDC = GetDC(hWnd);
     hBm = CreateCompatibleBitmap(hDC, W, H);
     ReleaseDC(hWnd, hDC);
-    SelectObject(hMemDC, hBm);
-    return 0;
 
-  case WM_LBUTTONDOWN:
-    InvalidateRect(hWnd, NULL, FALSE);
+    GLB_Resize(W, H);
+
+    SelectObject(hMemDC, hBm);
     return 0;
 
   case WM_PAINT:
     hDC = BeginPaint(hWnd, &ps);
+    Rectangle(hMemDC, 0, 0, W + 1, H + 1);
+
+    SelectObject(hMemDC, GetStockObject(DC_PEN));
+    SelectObject(hMemDC, GetStockObject(DC_BRUSH));
+    SetDCPenColor(hMemDC, RGB(0, 0, 0));
+    SetDCBrushColor(hMemDC, RGB(255, 255, 255));
+
+    GLB_Draw(hMemDC);
+
+    SetDCBrushColor(hMemDC, RGB(0, 0, 0));
     BitBlt(hDC, 0, 0, W, H, hMemDC, 0, 0, SRCCOPY);
     EndPaint(hWnd, &ps);
     return 0;  
   
   case WM_TIMER:
-    GetCursorPos(&pt);
-    ScreenToClient(hWnd, &pt);
-    SelectObject( hMemDC, GetStockObject(DC_BRUSH));
-    SetDCBrushColor(hMemDC, RGB(0, 0, 0));
-    Rectangle(hMemDC, 0, 0, W, H);
-    DrawEye( hMemDC, 200, 300, 90, 47, pt.x, pt.y );
-    DrawEye( hMemDC, 400, 300, 90, 47, pt.x, pt.y );
-    DrawEye( hMemDC, 600, 300, 90, 47, pt.x, pt.y );
-    DrawEye( hMemDC, 800, 300, 90, 47, pt.x, pt.y );
-    DrawEye( hMemDC, 1000, 300, 90, 47, pt.x, pt.y );
-
-    DrawEye( hMemDC, 200, 500, 90, 47, pt.x, pt.y );
-    DrawEye( hMemDC, 400, 500, 90, 47, pt.x, pt.y );
-    DrawEye( hMemDC, 600, 500, 90, 47, pt.x, pt.y );
-    DrawEye( hMemDC, 800, 500, 90, 47, pt.x, pt.y );
-    DrawEye( hMemDC, 1000, 500, 90, 47, pt.x, pt.y );
-
-
-    DrawEye( hMemDC, 1200 + 250 * sin(3 * (double)clock() / CLOCKS_PER_SEC), 700, 90, 47, pt.x, pt.y );
-
-    InvalidateRect(hWnd, NULL, FALSE);
+    
+    InvalidateRect(hWnd, NULL, TRUE);
     return 0;
 
   case WM_ERASEBKGND:
     return 0;
 
   case WM_DESTROY:
-    DeleteObject(hBm);
+   
     DeleteDC(hMemDC);
+    DeleteObject(hBm);
     KillTimer(hWnd, 0);
     PostQuitMessage(0);
     return 0;  
