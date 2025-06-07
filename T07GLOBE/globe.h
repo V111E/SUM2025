@@ -15,7 +15,7 @@ typedef double DBL;
 
 typedef struct 
 {
-  DBL x, y, z;
+  DBL X, Y, Z;
 } VEC;
 
 VOID GLB_Init( DBL R );

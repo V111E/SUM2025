@@ -9,16 +9,19 @@
 #include <time.h>
 
 #include "globe.h"
-
+#include "mth.h"
 
 
 #define WND_CLASS_NAME "WINDOW"
+
 
 LRESULT CALLBACK MyWindowFunc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 
 INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
                     CHAR *CmdLine, INT CmdShow )
 {
+
+
   WNDCLASS wc;
   HWND hWnd;
   MSG msg;
@@ -83,7 +86,7 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
     ReleaseDC(hWnd, hDC);
     Rectangle(hMemDC, 0, 0, W + 1, H + 1);
 
-    SetTimer(hWnd, 0, 2, NULL);
+    SetTimer(hWnd, 0, 10, NULL);
     return 0;
 
   case WM_SIZE:

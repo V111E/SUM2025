@@ -23,9 +23,9 @@ VOID GLB_Init( DBL R )
     {
       DBL theta = i * pi / (GRID_H - 1);
       DBL phi = j * 2 * pi / (GRID_W - 1);
-      GLB_Geom[i][j].x = R * sin(theta) * sin(phi);
-      GLB_Geom[i][j].y = R * cos(theta);
-      GLB_Geom[i][j].z = R * sin(theta) * cos(phi);
+      GLB_Geom[i][j].X = R * sin(theta) * sin(phi);
+      GLB_Geom[i][j].Y = R * cos(theta);
+      GLB_Geom[i][j].Z = R * sin(theta) * cos(phi);
     }
   }
 }
@@ -48,9 +48,9 @@ VEC RotateZ( VEC P, DBL Angle )
   VEC NewP;
   DBL a = Angle * pi / 180, si = sin(a), co = cos(a);
  
-  NewP.x = P.x * co - P.y * si;
-  NewP.y = P.x * si + P.y * co;
-  NewP.z = P.z;
+  NewP.X = P.X * co - P.Y * si;
+  NewP.Y = P.X * si + P.Y * co;
+  NewP.Z = P.Z;
   return NewP;
 }
 
@@ -59,9 +59,9 @@ VEC RotateX( VEC P, DBL Angle )
   VEC NewP;
   DBL a = Angle * pi / 180, si = sin(a), co = cos(a);
  
-  NewP.y = P.y * co - P.z * si;
-  NewP.z = P.y * si + P.z * co;
-  NewP.x = P.x;
+  NewP.Y = P.Y * co - P.Z * si;
+  NewP.Z = P.Y * si + P.Z * co;
+  NewP.X = P.X;
   return NewP;
 }
 VEC RotateY( VEC P, DBL Angle )
@@ -69,41 +69,55 @@ VEC RotateY( VEC P, DBL Angle )
   VEC NewP;
   DBL a = Angle * pi / 180, si = sin(a), co = cos(a);
  
-  NewP.z = P.z * co - P.x * si;
-  NewP.x = P.z * si + P.x * co;
-  NewP.y = P.y;
+  NewP.Z = P.Z * co - P.X * si;
+  NewP.X = P.Z * si + P.X * co;
+  NewP.Y = P.Y;
   return NewP;
 }
 VOID GLB_Draw( HDC hDC )
 {
-  INT i, j, s = 2;
+  INT i, j, s = 1;
   VEC P;
   DBL t = (double)clock() / CLOCKS_PER_SEC;
   static POINT pnts[GRID_H][GRID_W];
-  
+
   /* Build projections */
   for (i = 0; i < GRID_H; i++)
     for (j = 0; j < GRID_W; j++)
     {
-      P = RotateZ(RotateX(RotateY(GLB_Geom[i][j], cos(t) * 10), tan(t) * 10), t );
-      pnts[i][j].x = (INT)(P.x + GLB_Ws / 2);
-      pnts[i][j].y = (INT)(-P.y + GLB_Hs / 2);
+      P = RotateZ(RotateX(RotateY(GLB_Geom[i][j], cos(t) * 10), tan(t / 2) * 10), 1 / tan(t) * 5);
+
+      pnts[i][j].x = (INT)(P.X + GLB_Ws / 2);
+      pnts[i][j].y = (INT)(-P.Y + GLB_Hs / 2);
     }
   for (i = 0; i < GRID_H; i++)
     for (j = 0; j < GRID_W; j++)
     {
       Ellipse(hDC, pnts[i][j].x - s, pnts[i][j].y - s,
         pnts[i][j].x + s, pnts[i][j].y + s);
+
+      for (j = 0; j < GRID_W; j++)
+      {
+        
+        Ellipse(hDC, pnts[i][j].x - s - 50 * cos(j), pnts[i][j].y - s + 50 * sin(j),
+          pnts[i][j].x + s - 50 * cos(j), pnts[i][j].y + s + 50 * sin(j));
+      }
     }
 
-  SetDCPenColor(hDC, RGB(0, 110, 110));
+  SetDCPenColor(hDC, RGB(0, 150, 110));
   for (i = 0; i < GRID_H; i++)
   {
     MoveToEx(hDC, pnts[i][0].x, pnts[i][0].y, NULL);
     for (j = 0; j < GRID_W; j++)
-      LineTo(hDC, pnts[i][j].x, pnts[i][j].y);
+      LineTo(hDC, pnts[i][j].x , pnts[i][j].y);
   }
+  SetDCPenColor(hDC, RGB(100, 0, 100));
+  for (i = 0; i < GRID_H; i++)
+  {
+    MoveToEx(hDC, pnts[i][0].x - 50 * cos(j), pnts[i][0].y + 50 * sin(j), NULL);
+    for (j = 0; j < GRID_W; j++)
+      LineTo(hDC, pnts[i][j].x - 50 * cos(j) , pnts[i][j].y + 50 * sin(j));
+  }
+  
 }
-
-
 
