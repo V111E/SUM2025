@@ -9,14 +9,9 @@
 typedef double DBL;
 
 
-#define GRID_W 53
-#define GRID_H 31
+#define GRID_W 100
+#define GRID_H 90
 
-
-typedef struct 
-{
-  DBL X, Y, Z;
-} VEC;
 
 VOID GLB_Init( DBL R );
 VOID GLB_Resize( INT Ws, INT Hs );

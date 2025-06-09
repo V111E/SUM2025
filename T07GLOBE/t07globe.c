@@ -31,7 +31,7 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
   wc.cbWndExtra = 0;
   wc.hbrBackground = (HBRUSH)COLOR_GRAYTEXT;
   wc.hCursor = LoadCursor(NULL, IDC_CROSS);
-  wc.hIcon = LoadIcon(NULL, IDI_ERROR);
+  wc.hIcon = LoadIcon(NULL, IDI_EXCLAMATION);
   wc.lpszMenuName = NULL;
   wc.hInstance = hInstance;
   wc.lpfnWndProc = MyWindowFunc;
@@ -75,6 +75,11 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
   static HDC hMemDC;
   static BITMAP bm;
   static HBITMAP hBm;
+  DBL tim = clock() / (DBL)CLOCKS_PER_SEC;
+  double SyncTime;
+  DBL GLB_Time, GLB_DeltaTime, GLB_FPS;
+  BOOL GLB_IsPause;
+  LONG StartTime, OldTime, PauseTime, OldFPSTime, FrameCount;
 
   switch (Msg)
   {
@@ -86,8 +91,18 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
     ReleaseDC(hWnd, hDC);
     Rectangle(hMemDC, 0, 0, W + 1, H + 1);
 
-    SetTimer(hWnd, 0, 10, NULL);
+    StartTime = OldTime = OldFPSTime = clock();
+    FrameCount = 0;
+    GLB_IsPause = FALSE;
+    SetTimer(hWnd, 1, 10, NULL);
+
     return 0;
+
+  case WM_KEYDOWN:
+    if (wParam == VK_F2)
+    {
+      KillTimer(hWnd, 1);
+    }
 
   case WM_SIZE:
     H = HIWORD(lParam); 
@@ -121,7 +136,9 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
     return 0;  
   
   case WM_TIMER:
-    
+
+
+
     InvalidateRect(hWnd, NULL, TRUE);
     return 0;
 
@@ -137,5 +154,4 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
     return 0;  
   }
   return DefWindowProc(hWnd, Msg, wParam, lParam);
-} 
-
+}

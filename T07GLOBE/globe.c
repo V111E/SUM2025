@@ -6,6 +6,7 @@
 #include <math.h>
 #include <windows.h>
 #include "globe.h"
+#include "mth.h"
 #include <time.h>
 
 DOUBLE pi = 3.14159265359;
@@ -81,6 +82,7 @@ VOID GLB_Draw( HDC hDC )
   DBL t = (double)clock() / CLOCKS_PER_SEC;
   static POINT pnts[GRID_H][GRID_W];
 
+
   /* Build projections */
   for (i = 0; i < GRID_H; i++)
     for (j = 0; j < GRID_W; j++)
@@ -90,18 +92,12 @@ VOID GLB_Draw( HDC hDC )
       pnts[i][j].x = (INT)(P.X + GLB_Ws / 2);
       pnts[i][j].y = (INT)(-P.Y + GLB_Hs / 2);
     }
+
   for (i = 0; i < GRID_H; i++)
     for (j = 0; j < GRID_W; j++)
     {
       Ellipse(hDC, pnts[i][j].x - s, pnts[i][j].y - s,
         pnts[i][j].x + s, pnts[i][j].y + s);
-
-      for (j = 0; j < GRID_W; j++)
-      {
-        
-        Ellipse(hDC, pnts[i][j].x - s - 50 * cos(j), pnts[i][j].y - s + 50 * sin(j),
-          pnts[i][j].x + s - 50 * cos(j), pnts[i][j].y + s + 50 * sin(j));
-      }
     }
 
   SetDCPenColor(hDC, RGB(0, 150, 110));
@@ -111,13 +107,6 @@ VOID GLB_Draw( HDC hDC )
     for (j = 0; j < GRID_W; j++)
       LineTo(hDC, pnts[i][j].x , pnts[i][j].y);
   }
-  SetDCPenColor(hDC, RGB(100, 0, 100));
-  for (i = 0; i < GRID_H; i++)
-  {
-    MoveToEx(hDC, pnts[i][0].x - 50 * cos(j), pnts[i][0].y + 50 * sin(j), NULL);
-    for (j = 0; j < GRID_W; j++)
-      LineTo(hDC, pnts[i][j].x - 50 * cos(j) , pnts[i][j].y + 50 * sin(j));
-  }
-  
+
 }
 

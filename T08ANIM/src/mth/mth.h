@@ -1,13 +1,17 @@
-/* FILE NAME: t07globe.c
+/* FILE NAME: mth.h
  * PROGRAMMER: VE7
  * DATE: 09.06.2025
- * PURPOSE: globus
+ * PURPOSE: math calc
  */
 
 #ifndef __mth_h_
+#define __mth_h_
+
 #include <stdio.h>
 #include <math.h>
- 
+
+#include <windows.h>
+
 #define PI 3.14159265358979323846
 #define D2R(A) ((A) * (PI / 180.0))
 #define DegRad(a) D2R(a)
@@ -17,6 +21,10 @@
 typedef double DBL;
 typedef float FLT;
  
+typedef struct 
+{
+  DBL X, Y, Z;
+} VEC;
 
 /* тип для матрицы - массив в структуре */
 typedef struct tagMATR
@@ -24,7 +32,6 @@ typedef struct tagMATR
   DBL A[4][4];
 } MATR;
  
-
 __inline VEC VecSet( DBL X, DBL Y, DBL Z )
 {
   VEC r = {X, Y, Z};
@@ -206,6 +213,23 @@ __inline MATR MatrRotate( DBL AngleInDegree, VEC V )
   DBL a = DegRad(AngleInDegree), s = sin(a), c = cos(a);
 }
 
+__inline MATR MatrView( VEC Loc, VEC At, VEC Up1 )
+{
+  VEC
+    Dir = VecNormalize(VecSubVec(At, Loc)),
+    Right = VecNormalize(VecCrossVec(Dir, Up1)),
+    Up = VecNormalize(VecCrossVec(Right, Dir));
+  MATR m =
+  {
+    {
+      {Right.X, Up.X, -Dir.X, 0},
+      {Right.Y, Up.Y, -Dir.Y, 0},
+      {Right.Z, Up.Z, -Dir.Z, 0},
+      {-VecDotVec(Loc, Right), -VecDotVec(Loc, Up), VecDotVec(Loc, Dir), 1}
+    }
+  };
+  return m;
+}
 __inline MATR MatrMulMatr( MATR M1, MATR M2 )
 {
   MATR r = {{{0}}};
@@ -253,6 +277,15 @@ __inline DBL MatrDeterm( MATR M )
                               M.A[2][0], M.A[2][1], M.A[2][2],
                               M.A[3][0], M.A[3][1], M.A[3][2]);
 }
+
+__inline MATR MatrFrustum( DBL l, DBL r, DBL b, DBL t, DBL n, DBL f)
+{
+  return MatrSet(2 * n / (r - l), 0, 0, 0,
+                 0, 2 * n / (t - b), 0, 0,
+                 (r + l) / (r - l), (t + b) / (t - b), (f + n) / (f - n) * -1, -1,
+                 0, 0, -1 * 2 * n * f / (f - n), 0);
+}
+
  
 __inline MATR MatrInverse( MATR M )
 {
@@ -272,6 +305,6 @@ __inline MATR MatrInverse( MATR M )
                       M.A[P[i][2]][P[j][0]], M.A[P[i][2]][P[j][1]], M.A[P[i][2]][P[j][2]]) / det;
 }
  
-
- 
 #endif /* __mth_h_ */
+
+/**/
