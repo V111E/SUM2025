@@ -189,6 +189,10 @@
 					RelativePath=".\src\mth\mth.h"
 					>
 				</File>
+				<File
+					RelativePath=".\src\anim\rnd\rndprim.c"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Animation System"
@@ -206,10 +210,6 @@
 					</File>
 					<File
 						RelativePath=".\src\anim\rnd\rnddata.c"
-						>
-					</File>
-					<File
-						RelativePath=".\src\anim\rnd\rndprim.c"
 						>
 					</File>
 				</Filter>
