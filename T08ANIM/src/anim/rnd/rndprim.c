@@ -167,4 +167,3 @@ VOID VE7_RndPrimDraw( VE7PRIM *Pr, MATR World )
 
 
 
-

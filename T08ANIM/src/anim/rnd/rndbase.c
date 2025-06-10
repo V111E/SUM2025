@@ -5,8 +5,11 @@
  *          Common declaration module.
  */
 
-#include "rnd.h"
+#ifndef __rndbase_c_
+#define __rndbase_c_
 
+
+#include "rnd.h"
 
 VOID VE7_RndInit( HWND hWnd )
 {
@@ -86,3 +89,4 @@ VOID VE7_RndCamSet( VEC Loc, VEC At, VEC Up )
   VE7_RndMatrVP = MatrMulMatr(VE7_RndMatrView, VE7_RndMatrProj);
 }
 
+#endif /* __rndbase_c_ */
