@@ -10,10 +10,12 @@
 #include "def.h"
 #include "string.h"
 
+#define GLEW_STATIC
+#include <glew.h>
 
 extern HWND VE7_hRndWnd;        /* Work window handle */
-extern HDC VE7_hRndDCFrame;     /* Work window memory device context  */
-extern HBITMAP VE7_hRndBmFrame; /* Work window background bitmap handle */
+extern HDC VE7_hRndDC;     /* Work window  device context  */
+extern HGLRC VE7_hRndGC;     /* Work window  device context  */
 extern INT VE7_RndFrameW, VE7_RndFrameH; /* Work window size */
 
 extern DBL
@@ -46,7 +48,7 @@ VOID VE7_RndEnd( VOID );
 
 VOID VE7_RndStart( VOID );
 
-VOID VE7_RndCopyFrame( HDC hDC );
+VOID VE7_RndCopyFrame( VOID );
 
 VOID VE7_RndInit( HWND hWnd );
 

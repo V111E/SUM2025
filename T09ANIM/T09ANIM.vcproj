@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="T08ANIM"
+	Name="T09ANIM"
 	ProjectGUID="{9441B8C8-C014-4E8F-A6EF-2CCD1B29B983}"
-	RootNamespace="T08ANIM"
+	RootNamespace="T09ANIM"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -232,6 +232,14 @@
 						RelativePath=".\src\anim\rnd\rndprim.c"
 						>
 					</File>
+					<Filter
+						Name="OpenGL"
+						>
+						<File
+							RelativePath=".\src\anim\rnd\OpenGl\glew.c"
+							>
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter

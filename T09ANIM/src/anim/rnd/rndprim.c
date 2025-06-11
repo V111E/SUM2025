@@ -40,30 +40,17 @@ VOID VE7_RndPrimDraw( ve7PRIM *Pr, MATR World )
 {
   INT i;
   MATR wvp = MatrMulMatr(Pr->Trans, MatrMulMatr(World, VE7_RndMatrVP));
-  POINT *pnts;
- 
-  if ((pnts = malloc(sizeof(POINT) * Pr->NumOfV)) == NULL)
-    return;
-
-  for (i = 0; i < Pr->NumOfV; i++)
-  {
-    VEC p = VecMulMatr(Pr->V[i].P, wvp);
- 
-    pnts[i].x = (INT)((p.X + 1) * VE7_RndFrameW / 2);
-    pnts[i].y = (INT)((-p.Y + 1) * VE7_RndFrameH / 2);
-  }
   
   for (i = 0; i < Pr->NumOfI; i += 3)
   {
+    /*
     MoveToEx(VE7_hRndDCFrame, pnts[Pr->I[i]].x, pnts[Pr->I[i]].y, NULL);
     LineTo(VE7_hRndDCFrame, pnts[Pr->I[i + 1]].x, pnts[Pr->I[i + 1]].y);
     LineTo(VE7_hRndDCFrame, pnts[Pr->I[i + 2]].x, pnts[Pr->I[i + 2]].y);
     LineTo(VE7_hRndDCFrame, pnts[Pr->I[i]].x, pnts[Pr->I[i]].y);
+    */
+
   }
-  
-
-
-  free(pnts);
 }
 
 BOOL VE7_RndPrimLoad( ve7PRIM *Pr, CHAR *FileName )

@@ -19,7 +19,7 @@ VOID VE7_AnimInit( HWND hWnd )
 
   VE7_Anim.hWnd = hWnd;
   VE7_RndInit(hWnd);
-  VE7_Anim.hDC = VE7_hRndDCFrame;
+  VE7_Anim.hDC = VE7_hRndDC;
   VE7_Anim.W = VE7_RndFrameW;
   VE7_Anim.H = VE7_RndFrameH;
 
@@ -43,9 +43,9 @@ VOID VE7_AnimResize( INT W, INT H )
   VE7_Anim.W = W;
   VE7_Anim.H = H;
 }
-VOID VE7_AnimCopyFrame( HDC hDC )
+VOID VE7_AnimCopyFrame( VOID )
 {
-  VE7_RndCopyFrame(hDC);
+  VE7_RndCopyFrame();
 }
 VOID VE7_AnimRender( VOID )
 {

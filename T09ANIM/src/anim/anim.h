@@ -51,7 +51,7 @@ extern ve7ANIM VE7_Anim;
 VOID VE7_AnimInit( HWND hWnd );
 VOID VE7_AnimClose( VOID );
 VOID VE7_AnimResize( INT W, INT H );
-VOID VE7_AnimCopyFrame( HDC hDC );
+VOID VE7_AnimCopyFrame( VOID );
 VOID VE7_AnimRender( VOID );      
 VOID VE7_AnimAddUnit( ve7UNIT *Uni );
 VOID VE7_AnimFlipFullScreen( VOID );

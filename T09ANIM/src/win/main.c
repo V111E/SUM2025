@@ -99,21 +99,13 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
 
   case WM_PAINT:
     hDC = BeginPaint(hWnd, &ps);
-    VE7_AnimCopyFrame(hDC);
+    VE7_AnimCopyFrame();
     EndPaint(hWnd, &ps);
     return 0;  
   
   case WM_TIMER:
-    /*
-    VE7_RndStart();
-    VE7_RndPrimDraw(&Pr, MatrRotateY(30 * clock() / 1000.0));
-    VE7_RndPrimDraw(&PrO, MatrMulMatr(MatrScale(VecSet(1, 1, 1)), MatrRotateY(30 * clock() /1000)));
-    VE7_RndEnd();
-    */
     VE7_AnimRender();
-    hDC = GetDC(hWnd);
-    VE7_AnimCopyFrame(hDC);
-    ReleaseDC(hWnd, hDC);
+    VE7_AnimCopyFrame();
     return 0;
 
   case WM_ERASEBKGND:
