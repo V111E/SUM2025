@@ -4,10 +4,6 @@
  * PURPOSE    : 3D animation project.
  */
 
-
-#ifndef __anim_c_
-#define __anim_c_
-
 #include "anim.h"
 
 ve7ANIM VE7_Anim;
@@ -50,7 +46,7 @@ VOID VE7_AnimCopyFrame( VOID )
 VOID VE7_AnimRender( VOID )
 {
   INT i;
-  CHAR Buf[100];
+  //CHAR Buf[100];
 
   VE7_TimerResponse();
 
@@ -61,9 +57,9 @@ VOID VE7_AnimRender( VOID )
   for (i = 0; i < VE7_Anim.NumOfUnits; i++)
     VE7_Anim.Units[i]->Render(VE7_Anim.Units[i], &VE7_Anim);
   VE7_RndEnd();
-  SetBkMode(VE7_Anim.hDC, TRANSPARENT);
-  SetTextColor(VE7_Anim.hDC, RGB(255, 0, 0));
-  TextOut(VE7_Anim.hDC, 30, 30, Buf, sprintf(Buf, "FPS = %.5f", VE7_Anim.FPS));
+  //SetBkMode(VE7_Anim.hDC, TRANSPARENT);
+  //SetTextColor(VE7_Anim.hDC, RGB(255, 0, 0));
+  //TextOut(VE7_Anim.hDC, 30, 30, Buf, sprintf(Buf, "FPS = %.5f", VE7_Anim.FPS));
 
 }
 
@@ -77,4 +73,3 @@ VOID VE7_AnimDoExit( VOID )
 {
 }
 
-#endif /* __anim_c_ */

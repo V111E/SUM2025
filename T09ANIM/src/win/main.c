@@ -53,6 +53,7 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
   /* Add units */
   VE7_AnimAddUnit(VE7_UnitCreateBall());
+  VE7_AnimAddUnit(VE7_UnitCreateCTRL());
 
   while (TRUE)
     if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -74,7 +75,6 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
   HDC hDC;
   PAINTSTRUCT ps;
   MINMAXINFO *minmax;
-  /* static ve7PRIM Pr, PrO; */
 
   switch (Msg)
   {
@@ -90,8 +90,6 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
     SetTimer(hWnd, 1, 10, NULL);
     return 0;
 
-  //case WM_KEY_DOWN:
-    
   case WM_SIZE:
     VE7_AnimResize(LOWORD(lParam), HIWORD(lParam));
     SendMessage(hWnd, WM_TIMER, 1, 10);
@@ -112,10 +110,6 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
     return 1;
 
   case WM_DESTROY:
-    /*
-    VE7_RndPrimFree(&Pr);
-    VE7_RndPrimFree(&PrO); 
-    */
     VE7_AnimClose();
     KillTimer(hWnd, 1);
     PostQuitMessage(0);

@@ -4,9 +4,6 @@
  * PURPOSE    : 3D animation project.
  */
 
-#ifndef __u_ball_c_
-#define __u_ball_c_
-
 #include "units/units.h"
 
 typedef struct
@@ -16,8 +13,7 @@ typedef struct
   ve7PRIM Pr;
 } ve7UNIT_BALL;
 
-
-static VOID VE7_UnitInit( ve7UNIT_BALL *Uni, ve7ANIM *Ani)
+static VOID VE7_UnitInit( ve7UNIT_BALL *Uni, ve7ANIM *Ani )
 {
   Uni->Pos = VecSet(0, 1, 0);
   VE7_RndPrimLoad(&Uni->Pr, "bin/models/cow.obj");
@@ -43,7 +39,7 @@ static VOID VE7_UnitResponse( ve7UNIT_BALL *Uni, ve7ANIM *Ani)
 static VOID VE7_UnitRender( ve7UNIT_BALL *Uni, ve7ANIM *Ani)
 {
   MATR m;
-  m = MatrMulMatr(MatrRotateY(cos(7 * VE7_Anim.Time) * 30), MatrRotateX(sin(3 * VE7_Anim.Time) * 10));
+  m = MatrMulMatr3(MatrRotateY(90 * VE7_Anim.Time), MatrRotateX(VE7_Anim.Time * 70), MatrRotateZ(110 * VE7_Anim.Time));
    
   VE7_RndPrimDraw(&Uni->Pr, m);
 }
@@ -55,9 +51,9 @@ ve7UNIT * VE7_UnitCreateBall( VOID )
   if ((Uni = VE7_AnimUnitCreate(sizeof(ve7UNIT_BALL))) == NULL)
     return NULL;
   Uni->Init = (VOID *)VE7_UnitInit;
+  Uni->Close = (VOID *)VE7_UnitClose;
   Uni->Response = (VOID *)VE7_UnitResponse;
   Uni->Render = (VOID *)VE7_UnitRender;
   return Uni;
 }
 
-#endif /* __u_ball_c_ */

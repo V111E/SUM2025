@@ -3,8 +3,6 @@
  * LAST UPDATE: 10.06.2025
  * PURPOSE    : 3D animation project.
  */
-#ifndef __timer_c_
-#define __timer_c_
 
 #include "anim.h"
 
@@ -69,7 +67,6 @@ VOID VE7_TimerResponse( VOID )
   }
   OldTime = t.QuadPart; 
 }
-#endif /* __timer_c_ */
 
 
 

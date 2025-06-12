@@ -8,7 +8,7 @@
 
 HWND VE7_hRndWnd;       
 HDC VE7_hRndDC;    
-HGLRC VE7_hRndGC;     
+HGLRC VE7_hRndGLRC;
 INT VE7_RndFrameW, VE7_RndFrameH; 
 
 

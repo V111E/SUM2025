@@ -1,5 +1,6 @@
 /* FILE NAME  : rnd.h
- * PROGRAMMER : VE7
+
+* PROGRAMMER : VE7
  * LAST UPDATE: 09.06.2025
  * PURPOSE    : 3D animation project.
  *          Common declaration module.
@@ -13,10 +14,10 @@
 #define GLEW_STATIC
 #include <glew.h>
 
-extern HWND VE7_hRndWnd;        /* Work window handle */
-extern HDC VE7_hRndDC;     /* Work window  device context  */
-extern HGLRC VE7_hRndGC;     /* Work window  device context  */
-extern INT VE7_RndFrameW, VE7_RndFrameH; /* Work window size */
+extern HWND VE7_hRndWnd;      
+extern HDC VE7_hRndDC;
+extern HGLRC VE7_hRndGLRC;
+extern INT VE7_RndFrameW, VE7_RndFrameH;
 
 extern DBL
   VE7_RndProjSize,     /* Project plane fit square */
@@ -69,6 +70,10 @@ BOOL VE7_RndPrimCreate( ve7PRIM *Pr, INT NoofV, INT NoofI );
 VOID VE7_RndPrimDraw( ve7PRIM *Pr, MATR World );
 
 BOOL VE7_RndPrimLoad( ve7PRIM *Pr, CHAR *FileName );
+
+VOID VE7_RndPrimTriMeshAutoNormals( ve7VERTEX *V, INT NumOfV, INT *Ind, INT NumOfI );
+
+VOID VE7_RndPrimDraw( ve7PRIM *Pr, MATR World );
 
 #endif __rnd_h_
 

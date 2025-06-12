@@ -3,8 +3,7 @@
  * LAST UPDATE: 10.06.2025
  * PURPOSE    : 3D animation project.
  */
-#ifndef __unit_c_
-#define __unit_c_
+
 
 #include "anim.h"
 
@@ -42,4 +41,3 @@ ve7UNIT * VE7_AnimUnitCreate( INT Size )
   return Uni;
 } /* End of 'VE7_AnimUnitCreate' function */
 
-#endif /* __unit_c_ */

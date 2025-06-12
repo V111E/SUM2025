@@ -10,5 +10,6 @@
 #include "anim/anim.h"
 
 ve7UNIT * VE7_UnitCreateBall( VOID );
+ve7UNIT * VE7_UnitCreateCTRL( VOID );
 
 #endif /* __units_h_ */
