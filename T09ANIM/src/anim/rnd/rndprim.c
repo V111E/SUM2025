@@ -9,48 +9,79 @@
 #include <stdio.h>
 #include <string.h>
 
-typedef struct tagve7VERTEX1
-{
-  VEC P;   /* позици€ */
-  VEC2 T;  /* текстурна€ координата */
-  VEC N;   /* нормаль */
-  VEC4 C;  /* ÷вет (r,g,b,a) */
-} ve7VERTEX1;
-
 
 VOID VE7_RndPrimFree( ve7PRIM *Pr )
 {
-  if (Pr->V != NULL)
-    free(Pr->V);
+  glDeleteVertexArrays(1, &Pr->VA);
+  glDeleteBuffers(1, &Pr->VBuf);
+  glDeleteBuffers(1, &Pr->IBuf);
   memset(Pr, 0, sizeof(ve7PRIM));
 }
 
-BOOL VE7_RndPrimCreate( ve7PRIM *Pr, INT NoofV, INT NoofI )
+VOID VE7_RndPrimCreate( ve7PRIM *Pr, ve7PRIM_TYPE Type,
+                        ve7VERTEX *V, INT NoofV, INT *Ind, INT NoofI )
 {
-  INT size;
- 
+  INT i;
   memset(Pr, 0, sizeof(ve7PRIM));
-  size = sizeof(ve7VERTEX1) * NoofV + sizeof(INT) * NoofI;
- 
-  if ((Pr->V = malloc(size)) == NULL)
-    return FALSE;
-  memset(Pr->V, 0, size);
+
   
-  Pr->I = (INT *)(Pr->V + NoofV);
-  Pr->NumOfV = NoofV;
-  Pr->NumOfI = NoofI;
+  glGenVertexArrays(1, &Pr->VA);
+
+  if (V != NULL && NoofV != 0)
+  {
+    glBindVertexArray(Pr->VA);
+
+    glGenBuffers(1, &Pr->VBuf);
+    glBindBuffer(GL_ARRAY_BUFFER, Pr->VBuf);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(ve7VERTEX) * NoofV, V, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, FALSE, sizeof(ve7VERTEX),
+                          (VOID *)0); /* позици€ */
+    glVertexAttribPointer(1, 2, GL_FLOAT, FALSE, sizeof(ve7VERTEX),
+                          (VOID *)sizeof(VEC)); /* текстурные координаты */
+    glVertexAttribPointer(2, 3, GL_FLOAT, FALSE, sizeof(ve7VERTEX),
+                          (VOID *)(sizeof(VEC) + sizeof(VEC2))); /* нормаль */
+    glVertexAttribPointer(3, 4, GL_FLOAT, FALSE, sizeof(ve7VERTEX),
+                          (VOID *)(sizeof(VEC) * 2 + sizeof(VEC2))); /* цвет */
+
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(2);
+    glEnableVertexAttribArray(3);
+
+    glBindVertexArray(0);
+    Pr->MinBB = Pr->MaxBB = V[0].P;
+    for (i = 1; i < NoofV; i++)
+    {
+      Pr->MinBB = VecMinVec(Pr->MinBB, V[i].P);
+      Pr->MaxBB = VecMaxVec(Pr->MaxBB, V[i].P);
+    }
+  }
+
+  if (Ind != NULL && NoofI != 0)
+  {
+    glGenBuffers(1, &Pr->IBuf);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Pr->IBuf);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(INT) * NoofI, Ind, GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    Pr->NumOfElements = NoofI;
+  }
+  else
+    Pr->NumOfElements = NoofV;
+
+
   Pr->Trans = MatrIdentity();
-  memset(Pr->V, 0, size);
-  return TRUE;
+
 }
-
-
 
 BOOL VE7_RndPrimLoad( ve7PRIM *Pr, CHAR *FileName )
 {
   FILE *F;
   INT vn = 0, fn = 0;
+  ve7VERTEX *V;
+  INT *Ind;  
   CHAR Buf[1000];
+  INT size;
  
   memset(Pr, 0, sizeof(ve7PRIM));
   if ((F = fopen(FileName, "r")) == NULL)
@@ -74,11 +105,13 @@ BOOL VE7_RndPrimLoad( ve7PRIM *Pr, CHAR *FileName )
     }
   }
  
-  if (!VE7_RndPrimCreate(Pr, vn, fn * 3))
+  size = sizeof(ve7VERTEX) * vn + sizeof(INT) * fn * 3;
+  if ((V = malloc(size)) == NULL)
   {
     fclose(F);
     return FALSE;
   }
+  Ind = (INT *)(V + vn);
  
   rewind(F);
   vn = 0;
@@ -90,7 +123,7 @@ BOOL VE7_RndPrimLoad( ve7PRIM *Pr, CHAR *FileName )
       DBL x, y, z;
  
       sscanf(Buf + 2, "%lf%lf%lf", &x, &y, &z);
-      Pr->V[vn++].P = VecSet(x, y, z);
+      V[vn++].P = VecSet(x, y, z);
     }
     else if (Buf[0] == 'f' && Buf[1] == ' ')
     {
@@ -113,9 +146,9 @@ BOOL VE7_RndPrimLoad( ve7PRIM *Pr, CHAR *FileName )
           else
           {
             c2 = c;
-            Pr->I[fn++] = c0;
-            Pr->I[fn++] = c1;
-            Pr->I[fn++] = c2;
+            Ind[fn++] = c0;
+            Ind[fn++] = c1;
+            Ind[fn++] = c2;
             c1 = c2;
           }
           n++;
@@ -124,26 +157,15 @@ BOOL VE7_RndPrimLoad( ve7PRIM *Pr, CHAR *FileName )
       }
     }
   }
- 
   fclose(F);
+  VE7_RndPrimTriMeshAutoNormals( V, vn, Ind, fn );
+  VE7_RndPrimCreate(Pr, VE7_RND_PRIM_TRIMESH, V, vn, Ind, fn);
+  free(V);
+
   return TRUE;
 }
 
-
-//VE7_RndCamSet(VecSet1(5), VecSet1(0), VecSet(0, 1, 0));
-
-/*
-VOID VE7_RndPrimDraw( VE7PRIM *Pr, MATR World )
-{
-  MATR wvp = MatrMulMatr(World, VE7_RndMatrVP);
-    VEC p = VecMulMatr(Prim->V[i], wvp);
- 
-    pnts[i].x = (INT)((P.X + 1) * VE7_RndFrameW / 2);
-    pnts[i].y = (INT)((-P.Y + 1) * VE7_RndFrameH / 2);
-}
-*/
-
-VOID VE7_RndPrimTriMeshAutoNormals( ve7VERTEX1 *V, INT NumOfV, INT *Ind, INT NumOfI )
+VOID VE7_RndPrimTriMeshAutoNormals( ve7VERTEX *V, INT NumOfV, INT *Ind, INT NumOfI )
 {
   INT i;
   VEC L = VecNormalize(VecSet(1, 3, 2));
@@ -153,7 +175,7 @@ VOID VE7_RndPrimTriMeshAutoNormals( ve7VERTEX1 *V, INT NumOfV, INT *Ind, INT Num
  
   for (i = 0; i < NumOfI; i += 3)
   {
-    ve7VERTEX1 
+    ve7VERTEX 
       *P0 = &V[Ind[i]],
       *P1 = &V[Ind[i + 1]],
       *P2 = &V[Ind[i + 2]];
@@ -170,29 +192,33 @@ VOID VE7_RndPrimTriMeshAutoNormals( ve7VERTEX1 *V, INT NumOfV, INT *Ind, INT Num
   for (i = 0; i < NumOfV; i++)
   {
     FLT nl = VecDotVec(L, V[i].N);
-    V[i].C = Vec4SetVec3(VecMulNum(VecSet(0.8, 0.47, 0.30), nl < 0.1 ? 0.1 : nl), 1);
+    V[i].C = Vec4SetVec3(VecMulNum(VecSet(1, 0, 0), nl < 0.1 ? 0.1 : nl), 1);
   }
 } 
 
 VOID VE7_RndPrimDraw( ve7PRIM *Pr, MATR World )
 {
-  INT i;
+
   MATR wvp = MatrMulMatr3(Pr->Trans, World, VE7_RndMatrVP);
-  VEC L = VecNormalize(VecSet(1, 3, 2));
- 
   /* glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); */
   glLoadMatrixf(wvp.A[0]);
- 
-  glBegin(GL_TRIANGLES);
-  for (i = 0; i < Pr->NumOfI; i++)
+
+  glBindVertexArray(Pr->VA);
+
+  if (Pr->IBuf == 0)
+    glDrawArrays(GL_TRIANGLES, 0, Pr->NumOfElements);
+  else
   {
-    FLT nl = VecDotVec(L, Pr->V[Pr->I[i]].P);
-    VEC Color = VecMulNum(VecSet(0.8, 0.47, 0.30), nl < 0.1 ? 0.1 : nl);
- 
-    glColor3fv(&Color.X);
-    glVertex3fv(&Pr->V[Pr->I[i]].P.X);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Pr->IBuf);
+    glDrawElements(GL_TRIANGLES, Pr->NumOfElements, GL_UNSIGNED_INT, NULL);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
   }
-  glEnd();
+  glBindVertexArray(0);
+ 
+  //glBegin(GL_TRIANGLES);
+
+  //glEnd();
 }
 
 

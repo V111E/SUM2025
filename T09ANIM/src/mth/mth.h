@@ -42,10 +42,33 @@ typedef struct tagVEC4
   FLT X, Y, Z, W;
 } VEC4;
 
-VEC4 Vec4Set( FLT A, FLT B, FLT C, FLT D );
-VEC4 Vec4Set1( FLT A );
-VEC2 Vec2Set( FLT A, FLT B );
-VEC2 Vec2Set1( FLT A );
+__inline VEC4 Vec4Set( FLT A, FLT B, FLT C, FLT D )
+{
+  VEC4 r = {A, B, C, D};
+ 
+  return r;
+}
+
+__inline VEC4 Vec4Set1( FLT A )
+{
+  VEC4 r = {A, A, A, A};
+ 
+  return r;
+}
+
+__inline VEC2 Vec2Set( FLT A, FLT B )
+{
+  VEC2 r = {A, B};
+ 
+  return r;
+}
+
+__inline VEC2 Vec2Set1( FLT A )
+{
+  VEC2 r = {A, A};
+ 
+  return r;
+}
 
 __inline VEC VecSet( FLT X, FLT Y, FLT Z )
 {
@@ -54,16 +77,6 @@ __inline VEC VecSet( FLT X, FLT Y, FLT Z )
   return r;
 }
 
-__inline VEC4 Vec4Set( FLT X, FLT Y, FLT Z, FLT M )
-{
-  VEC4 v;
-
-  v.X = X;
-  v.Y = Y;
-  v.Z = Z;
-  v.M = M;
-  return v;
-}
 
 __inline VEC4 Vec4SetVec3( VEC P, FLT A )
 {
@@ -130,6 +143,20 @@ __inline VEC VecNormalize( VEC V )
     return V;
   return VecDivNum(V, sqrt(len));
 }
+__inline VEC VecMinVec( VEC V1, VEC V2)
+{
+  return VecSet(V1.X < V2.X ? V1.X : V2.X,
+                V1.Y < V2.Y ? V1.Y : V2.Y,
+                V1.Z < V2.Z ? V1.Z : V2.Z);
+}
+
+__inline VEC VecMaxVec( VEC V1, VEC V2)
+{
+  return VecSet(V1.X > V2.X ? V1.X : V2.X,
+                V1.Y > V2.Y ? V1.Y : V2.Y,
+                V1.Z > V2.Z ? V1.Z : V2.Z);
+}
+
  
 __inline VEC PointTransform( VEC V, MATR M )
 {

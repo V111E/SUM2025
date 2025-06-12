@@ -31,18 +31,29 @@ extern MATR
 
 typedef struct tagve7VERTEX
 {
-  VEC P;
+  VEC P;  
+  VEC2 T; 
+  VEC N;  
+  VEC4 C; 
 } ve7VERTEX;
+
+typedef enum tagve7PRIM_TYPE
+{
+  VE7_RND_PRIM_POINTS,   /* Array of points  – GL_POINTS */
+  VE7_RND_PRIM_LINES,    /* Line segments (by 2 points) – GL_LINES */
+  VE7_RND_PRIM_TRIMESH,  /* Triangle mesh - array of triangles – GL_TRIANGLES */
+} ve7PRIM_TYPE;
 
 typedef struct tagve7RPIM
 {
-  ve7VERTEX *V;
-  INT NumOfV;
-
-  INT *I;
-  INT NumOfI;
-
-  MATR Trans;
+  ve7PRIM_TYPE Type; /* Primitive type */
+  INT
+    VA,              /* Vertex array Id */
+    VBuf,            /* Vertex buffer Id */
+    IBuf;            /* Index buffer Id (if 0 - use only vertex buffer) */
+  INT NumOfElements; /* Number of indices/vecrtices */
+  VEC MinBB, MaxBB;  /* Bound box */
+  MATR Trans;   /* Additional transformation matrix */
 } ve7PRIM;
  
 VOID VE7_RndEnd( VOID );
@@ -65,7 +76,8 @@ VOID VE7_RndCamSet( VEC Loc, VEC At, VEC Up );
 
 VOID VE7_RndPrimFree( ve7PRIM *Pr );
 
-BOOL VE7_RndPrimCreate( ve7PRIM *Pr, INT NoofV, INT NoofI );
+VOID VE7_RndPrimCreate( ve7PRIM *Pr, ve7PRIM_TYPE Type,
+                        ve7VERTEX *V, INT NoofV, INT *Ind, INT NoofI );
 
 VOID VE7_RndPrimDraw( ve7PRIM *Pr, MATR World );
 
@@ -74,6 +86,10 @@ BOOL VE7_RndPrimLoad( ve7PRIM *Pr, CHAR *FileName );
 VOID VE7_RndPrimTriMeshAutoNormals( ve7VERTEX *V, INT NumOfV, INT *Ind, INT NumOfI );
 
 VOID VE7_RndPrimDraw( ve7PRIM *Pr, MATR World );
+
+VOID APIENTRY glDebugOutput( UINT Source, UINT Type, UINT Id, UINT Severity,
+                             INT Length, const CHAR *Message,
+                             const VOID *UserParam );
 
 #endif __rnd_h_
 

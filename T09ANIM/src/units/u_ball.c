@@ -39,7 +39,7 @@ static VOID VE7_UnitResponse( ve7UNIT_BALL *Uni, ve7ANIM *Ani)
 static VOID VE7_UnitRender( ve7UNIT_BALL *Uni, ve7ANIM *Ani)
 {
   MATR m;
-  m = MatrMulMatr3(MatrRotateY(90 * VE7_Anim.Time), MatrRotateX(VE7_Anim.Time * 70), MatrRotateZ(110 * VE7_Anim.Time));
+  m = MatrMulMatr3(MatrRotateY(-70 * VE7_Anim.Time), MatrRotateX(VE7_Anim.Time * -110), MatrRotateZ(-50 * VE7_Anim.Time));
    
   VE7_RndPrimDraw(&Uni->Pr, m);
 }

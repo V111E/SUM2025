@@ -75,8 +75,30 @@ VOID VE7_RndInit( HWND hWnd )
   VE7_hRndGLRC = hRC;
   wglMakeCurrent(VE7_hRndDC, VE7_hRndGLRC);
 
+  #ifndef NDEBUG
+  OutputDebugString(glGetString(GL_VERSION));
+  OutputDebugString("\n");
+  OutputDebugString(glGetString(GL_VENDOR));
+  OutputDebugString("\n");
+  OutputDebugString(glGetString(GL_RENDERER));
+  OutputDebugString("\n");
+
+  printf("Version : %s\n", glGetString(GL_VERSION));
+  printf("Vendor  : %s\n", glGetString(GL_VENDOR));
+  printf("Renderer: %s\n", glGetString(GL_RENDERER));
+  #endif /* NDEBUG */
+
+  #ifndef NDEBUG
+  glEnable(GL_DEBUG_OUTPUT);
+  glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+  glDebugMessageCallback(glDebugOutput, NULL);
+  #endif /* NDEBUG */
+
+
+  glEnable(GL_DEPTH_TEST);
+
   VE7_RndResize(30, 30);
-  VE7_RndCamSet(VecSet(25, 25, 25), VecSet(0, 0, 0), VecSet(0, 1, 0));
+  VE7_RndCamSet(VecSet1(24), VecSet(0, 0, 0), VecSet(0, 1, 0));
 }
 
 VOID VE7_RndClose( VOID )
