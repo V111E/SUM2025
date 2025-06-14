@@ -42,10 +42,10 @@ VOID VE7_TimerResponse( VOID )
   LARGE_INTEGER t;
  
   QueryPerformanceCounter(&t);
-  /* Global time */
+
   VE7_Anim.GlobalTime = (DBL)(t.QuadPart - StartTime) / TimePerSec;
   VE7_Anim.GlobalDeltaTime = (DBL)(t.QuadPart - OldTime) / TimePerSec;
-  /* Time with pause */
+
   if (IsPause)
   {
     VE7_Anim.DeltaTime = 0;

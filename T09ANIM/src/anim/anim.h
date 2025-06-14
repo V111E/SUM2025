@@ -30,14 +30,15 @@ struct tagve7ANIM
   HWND hWnd;
   HDC hDC;
   INT W, H;
+  BOOL IsActive;
 
   ve7UNIT * Units[VE7_MAX_UNITS];
   INT NumOfUnits;
 
   DBL
-    GlobalTime, GlobalDeltaTime, /* Global time and interframe interval */
-    Time, DeltaTime,             /* Time with pause and interframe interval */
-    FPS;                         /* Frames per second value */
+    GlobalTime, GlobalDeltaTime, 
+    Time, DeltaTime,             
+    FPS;
   BOOL
     IsPause;
   
@@ -45,6 +46,7 @@ struct tagve7ANIM
   BYTE KeysClick[256];
   BYTE KeysOld[256];
 };
+
 
 extern ve7ANIM VE7_Anim;
 

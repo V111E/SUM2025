@@ -9,6 +9,7 @@
 #define __def_h_
 
 #pragma warning(disable: 4244 4305 4030)
+#pragma comment(lib, "winmm")
 
 /* Debug memory allocation support */
 #ifndef NDEBUG
@@ -23,6 +24,7 @@
 #include <stdlib.h>
  
 #include "mth/mth.h"
+#include <mmsystem.h>
  
 /* 64 bit integer data type */
 typedef long long INT64;

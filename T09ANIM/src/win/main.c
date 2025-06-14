@@ -75,11 +75,13 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
   HDC hDC;
   PAINTSTRUCT ps;
   MINMAXINFO *minmax;
+  BOOL SaveActivity;
 
   switch (Msg)
   {
   case WM_GETMINMAXINFO:
     minmax = (MINMAXINFO *)lParam;
+    minmax->ptMinTrackSize.y = 100;
     minmax->ptMaxTrackSize.y =
       GetSystemMetrics(SM_CYMAXTRACK) +
       GetSystemMetrics(SM_CYCAPTION) + GetSystemMetrics(SM_CYBORDER) * 2;
@@ -97,9 +99,20 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
 
   case WM_PAINT:
     hDC = BeginPaint(hWnd, &ps);
+    VE7_AnimRender();
     VE7_AnimCopyFrame();
+
     EndPaint(hWnd, &ps);
     return 0;  
+  
+  case WM_ACTIVATE:
+    VE7_Anim.IsActive = LOWORD(wParam) != WA_INACTIVE;
+    return 0;
+
+  case WM_ENTERSIZEMOVE:
+    SaveActivity = VE7_Anim.IsActive;
+    VE7_Anim.IsActive = FALSE;
+    return 0;
   
   case WM_TIMER:
     VE7_AnimRender();

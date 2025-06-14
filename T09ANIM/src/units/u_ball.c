@@ -6,6 +6,7 @@
 
 #include "units/units.h"
 
+
 typedef struct
 {
   VE7_UNIT_BASE_FIELDS;
@@ -39,7 +40,9 @@ static VOID VE7_UnitResponse( ve7UNIT_BALL *Uni, ve7ANIM *Ani)
 static VOID VE7_UnitRender( ve7UNIT_BALL *Uni, ve7ANIM *Ani)
 {
   MATR m;
-  m = MatrMulMatr3(MatrRotateY(-70 * VE7_Anim.Time), MatrRotateX(VE7_Anim.Time * -110), MatrRotateZ(-50 * VE7_Anim.Time));
+  m = MatrMulMatr3(MatrRotateY(sin(VE7_Anim.Time) * cos(VE7_Anim.Time) * tan(VE7_Anim.Time) * sin(VE7_Anim.Time) * 100),
+                   MatrRotateX(sin(VE7_Anim.Time) * tan(VE7_Anim.Time) * (1 / tan(VE7_Anim.Time)) * cos(VE7_Anim.Time) * 50),
+                   MatrRotateZ(cos(VE7_Anim.Time)));
    
   VE7_RndPrimDraw(&Uni->Pr, m);
 }

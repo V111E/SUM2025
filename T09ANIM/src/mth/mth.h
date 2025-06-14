@@ -78,9 +78,16 @@ __inline VEC VecSet( FLT X, FLT Y, FLT Z )
 }
 
 
-__inline VEC4 Vec4SetVec3( VEC P, FLT A )
+__inline VEC4 Vec4SetVec3w( VEC P, FLT W )
 {
-  return Vec4Set(P.X, P.Y, P.Z, A);
+  return Vec4Set(P.X, P.Y, P.Z, W);
+}
+
+__inline VEC4 Vec4SetVec3( VEC v )
+{
+  VEC4 v1 = {v.X, v.Y, v.Z, 0};
+
+  return v1;
 }
  
 __inline VEC VecSet1( FLT A )
@@ -368,6 +375,7 @@ __inline MATR MatrInverse( MATR M )
         MatrDeterm3x3(M.A[P[i][0]][P[j][0]], M.A[P[i][0]][P[j][1]], M.A[P[i][0]][P[j][2]],
                       M.A[P[i][1]][P[j][0]], M.A[P[i][1]][P[j][1]], M.A[P[i][1]][P[j][2]],
                       M.A[P[i][2]][P[j][0]], M.A[P[i][2]][P[j][1]], M.A[P[i][2]][P[j][2]]) / det;
+  return r;
 }
  
 #endif /* __mth_h_ */

@@ -13,6 +13,16 @@ static VOID VE7_AnimKeyboardInit( VOID )
 }
 static VOID VE7_AnimKeyboardResponse( VOID )
 {
+  INT i;
+
+  GetKeyboardState(VE7_Anim.Keys);
+  for (i = 0; i < 256; i++)
+  {
+    VE7_Anim.Keys[i] >>= 7;
+    VE7_Anim.KeysClick[i] = VE7_Anim.Keys[i] && !VE7_Anim.KeysOld[i];
+  }
+ 
+  memcpy(VE7_Anim.KeysOld, VE7_Anim.Keys, 256);
 
 }
 static VOID VE7_AnimMouseInit( VOID )

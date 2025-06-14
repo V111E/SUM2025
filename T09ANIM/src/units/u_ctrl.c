@@ -21,6 +21,9 @@ static VOID VE7_UnitClose( ve7UNIT_CTRL *Uni, ve7ANIM *Ani)
 
 static VOID VE7_UnitResponse( ve7UNIT_CTRL *Uni, ve7ANIM *Ani)
 {
+  if (Ani->KeysClick['P'])
+    Ani->IsPause = !Ani->IsPause;
+
 }
 
 static VOID VE7_UnitRender( ve7UNIT_CTRL *Uni, ve7ANIM *Ani)

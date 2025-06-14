@@ -8,11 +8,10 @@
 #ifndef __rnd_h_
 #define __rnd_h_
 
-#include "def.h"
-#include "string.h"
-
 #define GLEW_STATIC
 #include <glew.h>
+#include "res/rndres.h"
+
 
 extern HWND VE7_hRndWnd;      
 extern HDC VE7_hRndDC;
@@ -39,9 +38,10 @@ typedef struct tagve7VERTEX
 
 typedef enum tagve7PRIM_TYPE
 {
-  VE7_RND_PRIM_POINTS,   /* Array of points  – GL_POINTS */
-  VE7_RND_PRIM_LINES,    /* Line segments (by 2 points) – GL_LINES */
-  VE7_RND_PRIM_TRIMESH,  /* Triangle mesh - array of triangles – GL_TRIANGLES */
+  VE7_RND_PRIM_POINTS,
+  VE7_RND_PRIM_LINES,
+  VE7_RND_PRIM_TRIMESH,
+  VE7_RND_PRIM_TRISTRIP, 
 } ve7PRIM_TYPE;
 
 typedef struct tagve7RPIM
@@ -53,9 +53,17 @@ typedef struct tagve7RPIM
     IBuf;            /* Index buffer Id (if 0 - use only vertex buffer) */
   INT NumOfElements; /* Number of indices/vecrtices */
   VEC MinBB, MaxBB;  /* Bound box */
-  MATR Trans;   /* Additional transformation matrix */
+  MATR Trans;        /* Additional transformation matrix */
+  INT MtlNo;         /* Material numb in material array */
 } ve7PRIM;
+
+typedef struct tagve7GRID
+{
+  INT W, H;      
+  ve7VERTEX *V;  
+} ve7GRID;
  
+
 VOID VE7_RndEnd( VOID );
 
 VOID VE7_RndStart( VOID );
@@ -90,6 +98,14 @@ VOID VE7_RndPrimDraw( ve7PRIM *Pr, MATR World );
 VOID APIENTRY glDebugOutput( UINT Source, UINT Type, UINT Id, UINT Severity,
                              INT Length, const CHAR *Message,
                              const VOID *UserParam );
+
+BOOL VE7_RndGridCreate( ve7GRID *G, INT W, INT H );
+
+
+VOID VE7_RndGridFree( ve7GRID *G );
+VOID VE7_RndPrimFromGrid( ve7PRIM *Pr, ve7GRID *G );
+
+VOID VE7_RndGridAutoNormals( ve7GRID *G );
 
 #endif __rnd_h_
 
