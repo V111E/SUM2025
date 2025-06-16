@@ -43,10 +43,9 @@ static CHAR * VE7_RndShdLoadTextFromFile( CHAR * FileName )
   fread(txt, 1, flen, F);
   fclose(F);
   return txt;
-
 }
 
-static VOID * VE7_RndShdLog( CHAR * FileNamePrefix, CHAR *Part, CHAR *Text )
+static VOID VE7_RndShdLog( CHAR * FileNamePrefix, CHAR *Part, CHAR *Text )
 {
   FILE *F;
 
@@ -173,7 +172,6 @@ static VOID VE7_RndShdFree( INT Prg )
     }
   glDeleteProgram(Prg);
 }
-
 
 VOID VE7_RndShdInit( VOID )
 {

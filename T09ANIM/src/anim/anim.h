@@ -45,6 +45,8 @@ struct tagve7ANIM
   BYTE Keys[256];
   BYTE KeysClick[256];
   BYTE KeysOld[256];
+
+  INT Mx, My, Mz, Mdx, Mdy, Mdz;
 };
 
 
@@ -58,8 +60,12 @@ VOID VE7_AnimRender( VOID );
 VOID VE7_AnimAddUnit( ve7UNIT *Uni );
 VOID VE7_AnimFlipFullScreen( VOID );
 VOID VE7_AnimDoExit( VOID );
+ve7UNIT * VE7_AnimUnitCreate( INT Size );
+
 VOID VE7_TimerInit( VOID );
 VOID VE7_TimerResponse( VOID );
-ve7UNIT * VE7_AnimUnitCreate( INT Size );
+
+VOID VE7_AnimInputInit( VOID );
+VOID VE7_AnimInputResponse( VOID );
 
 #endif /* __anim_h_ */

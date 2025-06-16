@@ -4,8 +4,8 @@
  * PURPOSE    : 3D animation project.
  */
 
-#include "anim\rnd\rnd.h"
-
+#include "anim\rnd\rnd.h"           
+                                     
 typedef struct tagve7TEXTURE
 {
   CHAR Name[VE7_STR_MAX]; /* Texture name */

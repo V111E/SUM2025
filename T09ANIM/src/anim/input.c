@@ -30,6 +30,15 @@ static VOID VE7_AnimMouseInit( VOID )
 }
 static VOID VE7_AnimMouseResponse( VOID )
 { 
+  POINT pt;
+ 
+  GetCursorPos(&pt);
+  ScreenToClient(VE7_Anim.hWnd, &pt);
+ 
+  VE7_Anim.Mdx = pt.x - VE7_Anim.Mx;
+  VE7_Anim.Mdy = pt.y - VE7_Anim.My;
+  VE7_Anim.Mx = pt.x;
+  VE7_Anim.My = pt.y;
 } 
 static VOID VE7_AnimJoystickInit( VOID )
 {

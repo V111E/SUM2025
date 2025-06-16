@@ -33,7 +33,7 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
   if (!RegisterClass(&wc))
   {
-    MessageBox(NULL, "Error reg win class", "AHTUNG", MB_OK);
+    MessageBox(NULL, "Error reg win class", "ahtung", MB_OK);
     return 0;
   }
 
@@ -52,8 +52,9 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
   UpdateWindow(hWnd);
 
   /* Add units */
-  VE7_AnimAddUnit(VE7_UnitCreateBall());
+  //VE7_AnimAddUnit(VE7_UnitCreateBall());
   VE7_AnimAddUnit(VE7_UnitCreateCTRL());
+  VE7_AnimAddUnit(VE7_UnitCreateGrid());
 
   while (TRUE)
     if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -130,3 +131,6 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
   }
   return DefWindowProc(hWnd, Msg, wParam, lParam);
 }
+
+
+

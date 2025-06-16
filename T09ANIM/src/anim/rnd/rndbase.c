@@ -96,9 +96,11 @@ VOID VE7_RndInit( HWND hWnd )
 
 
   glEnable(GL_DEPTH_TEST);
+  glEnable(GL_PRIMITIVE_RESTART);
+  glPrimitiveRestartIndex(-1);
 
   VE7_RndResize(30, 30);
-  VE7_RndCamSet(VecSet1(24), VecSet(0, 0, 0), VecSet(0, 1, 0));
+  VE7_RndCamSet(VecSet1(1.8), VecSet(0, 0, 0), VecSet(0, 1, 0));
 
   VE7_RndResInit();
 }
@@ -162,4 +164,16 @@ VOID VE7_RndCamSet( VEC Loc, VEC At, VEC Up )
 {
   VE7_RndMatrView = MatrView(Loc, At, Up);
   VE7_RndMatrVP = MatrMulMatr(VE7_RndMatrView, VE7_RndMatrProj);
+
+  VE7_RndCamRight = VecSet(VE7_RndMatrView.A[0][0],
+                           VE7_RndMatrView.A[1][0],
+                           VE7_RndMatrView.A[2][0]);
+  VE7_RndCamUp = VecSet(VE7_RndMatrView.A[0][1],
+                        VE7_RndMatrView.A[1][1],
+                        VE7_RndMatrView.A[2][1]);
+  VE7_RndCamDir = VecSet(-VE7_RndMatrView.A[0][2],
+                         -VE7_RndMatrView.A[1][2],
+                         -VE7_RndMatrView.A[2][2]);
+  VE7_RndCamLoc = Loc;
+  VE7_RndCamAt = At;
 }

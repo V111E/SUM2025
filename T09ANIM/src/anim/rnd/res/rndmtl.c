@@ -47,6 +47,7 @@ INT VE7_RndMtlAdd( ve7MATERIAL *Mtl )
 UINT VE7_RndMtlApply( INT MtlNo )
 {
   UINT prg;
+  INT prg_no;
   ve7MATERIAL *mtl;
   INT loc, i;
  
@@ -56,10 +57,10 @@ UINT VE7_RndMtlApply( INT MtlNo )
   mtl = &VE7_RndMaterials[MtlNo];
  
   /* Set shader program Id */
-  prg = mtl->ShdNo;
-  if (prg < 0 || prg >= VE7_RndShadersSize)
-    prg = 0;
-  prg = VE7_RndShaders[prg].ProgId;
+  prg_no = mtl->ShdNo;
+  if (prg_no < 0 || prg_no >= VE7_RndShadersSize)
+    prg_no = 0;
+  prg = VE7_RndShaders[prg_no].ProgId;
  
   if (prg == 0)
     return 0;

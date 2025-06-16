@@ -7,13 +7,13 @@
 #include <string.h>
 
 #include "rnd.h"
+#include "anim\anim.h"
 
 BOOL VE7_RndGridCreate( ve7GRID *G, INT W, INT H )
 {
   if ((G->V = malloc(W * H * sizeof(ve7VERTEX))) == NULL)
     return FALSE;
   memset(G->V, 0, sizeof(G->V));
-
   G->W = W;
   G->H = H;
 
@@ -51,7 +51,6 @@ VOID VE7_RndPrimFromGrid( ve7PRIM *Pr, ve7GRID *G )
   free(Ind);
 }
 
-
 VOID VE7_RndGridAutoNormals( ve7GRID *G )
 {
   INT i, j;
@@ -82,11 +81,9 @@ VOID VE7_RndGridAutoNormals( ve7GRID *G )
       P00->N = VecAddVec(P00->N, N);
       P01->N = VecAddVec(P01->N, N);
       P11->N = VecAddVec(P11->N, N);
-   }
+    }
 
   for (i = 0; i < G->W * G->H; i++)
     G->V[i].N = VecNormalize(G->V[i].N);
-  
-
 }
 

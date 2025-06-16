@@ -294,6 +294,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\units\u_grid.c"
+					>
+				</File>
+				<File
 					RelativePath=".\src\units\units.h"
 					>
 				</File>

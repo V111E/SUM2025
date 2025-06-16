@@ -28,6 +28,8 @@ extern MATR
   VE7_RndMatrProj, /* Projection coordinate system matrix */
   VE7_RndMatrVP;   /* Stored (View * Proj) matrix */
 
+extern VEC VE7_RndCamLoc, VE7_RndCamAt, VE7_RndCamDir, VE7_RndCamRight, VE7_RndCamUp;
+
 typedef struct tagve7VERTEX
 {
   VEC P;  
@@ -101,8 +103,8 @@ VOID APIENTRY glDebugOutput( UINT Source, UINT Type, UINT Id, UINT Severity,
 
 BOOL VE7_RndGridCreate( ve7GRID *G, INT W, INT H );
 
-
 VOID VE7_RndGridFree( ve7GRID *G );
+
 VOID VE7_RndPrimFromGrid( ve7PRIM *Pr, ve7GRID *G );
 
 VOID VE7_RndGridAutoNormals( ve7GRID *G );

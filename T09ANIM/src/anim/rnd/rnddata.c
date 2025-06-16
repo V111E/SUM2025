@@ -21,6 +21,7 @@ MATR
   VE7_RndMatrView, /* View coordinate system matrix */
   VE7_RndMatrProj, /* Projection coordinate system matrix */
   VE7_RndMatrVP;   /* Stored (View * Proj) matrix */
- 
+
+VEC VE7_RndCamLoc, VE7_RndCamAt, VE7_RndCamDir, VE7_RndCamRight, VE7_RndCamUp;
  
 

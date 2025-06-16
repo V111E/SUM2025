@@ -14,6 +14,7 @@
 
 #define PI 3.14159265358979323846
 #define D2R(A) ((A) * (PI / 180.0))
+#define R2D(A) ((A) * (180.0 / PI))
 #define DegRad(a) D2R(a)
 #define MatrMulMatr3(A, B, C) MatrMulMatr(MatrMulMatr(A, B), C)
  

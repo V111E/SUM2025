@@ -20,7 +20,7 @@ VOID VE7_AnimInit( HWND hWnd )
   VE7_Anim.H = VE7_RndFrameH;
 
   VE7_TimerInit();
-
+  VE7_AnimInputInit();
 }
 VOID VE7_AnimClose( VOID )
 {
@@ -48,6 +48,7 @@ VOID VE7_AnimRender( VOID )
   INT i;
 
   VE7_TimerResponse();
+  VE7_AnimInputResponse();
 
   for (i = 0; i < VE7_Anim.NumOfUnits; i++)
     VE7_Anim.Units[i]->Response(VE7_Anim.Units[i], &VE7_Anim);
