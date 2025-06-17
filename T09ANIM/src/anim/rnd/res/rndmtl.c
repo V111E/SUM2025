@@ -5,7 +5,6 @@
  */
 
 #include "anim\anim.h"
-#include "rndtex.c"
  
 ve7MATERIAL VE7_RndMtlGetDef( VOID )
 {
@@ -33,6 +32,17 @@ VOID VE7_RndMtlInit( VOID )
 
 VOID VE7_RndMtlClose( VOID )
 {
+  ve7MATERIAL def = {
+    "Default",
+    {0.0, 0.0, 0.0},
+    {0.0, 0.0, 0.0},
+    {0.0, 0.0, 0.0},
+    0, 1,
+    {0, 0, 0, 0, 0, 0, 0, 0},
+    0
+  };
+  VE7_RndMtlAdd(&def);
+  VE7_RndMaterialsSize = 0;
 
 }
  
@@ -83,7 +93,7 @@ UINT VE7_RndMtlApply( INT MtlNo )
     glUniform1f(loc, mtl->Ph);
   if ((loc = glGetUniformLocation(prg, "Trans")) != -1)
     glUniform1f(loc, mtl->Trans);
- 
+
   /* Set textures */
   for (i = 0; i < 8; i++)
   {
@@ -103,3 +113,4 @@ UINT VE7_RndMtlApply( INT MtlNo )
  
 
 
+/*End of file*/

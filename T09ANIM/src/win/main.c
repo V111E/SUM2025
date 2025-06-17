@@ -52,7 +52,7 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
   UpdateWindow(hWnd);
 
   /* Add units */
-  //VE7_AnimAddUnit(VE7_UnitCreateBall());
+  VE7_AnimAddUnit(VE7_UnitCreateBall());
   VE7_AnimAddUnit(VE7_UnitCreateCTRL());
   VE7_AnimAddUnit(VE7_UnitCreateGrid());
 
@@ -134,3 +134,4 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
 
 
 
+/*End of file*/

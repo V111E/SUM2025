@@ -58,4 +58,4 @@ VOID VE7_AnimInputResponse( VOID )
   VE7_AnimMouseResponse();
   VE7_AnimJoystickResponse();
 
-}
+}/*End of file*/

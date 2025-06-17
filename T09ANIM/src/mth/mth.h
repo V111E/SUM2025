@@ -78,7 +78,6 @@ __inline VEC VecSet( FLT X, FLT Y, FLT Z )
   return r;
 }
 
-
 __inline VEC4 Vec4SetVec3w( VEC P, FLT W )
 {
   return Vec4Set(P.X, P.Y, P.Z, W);
@@ -142,7 +141,12 @@ __inline FLT VecLen( VEC V )
     return len;
   return sqrt(len);
 }
- 
+
+__inline FLT VecLen2( VEC V )
+{
+  return VecLen( V ) * VecLen( V );
+}
+
 __inline VEC VecNormalize( VEC V )
 {
   FLT len = VecDotVec(V, V);
@@ -381,4 +385,4 @@ __inline MATR MatrInverse( MATR M )
  
 #endif /* __mth_h_ */
 
-/**/
+/*End of file*/

@@ -20,6 +20,14 @@ typedef struct tagve7SHADER
   INT ProgId;
 } ve7SHADER;
 
+typedef struct tagve7TEXTURE
+{
+  CHAR Name[VE7_STR_MAX]; /* Texture name */
+  INT W, H;               /* Texture size in pixels */
+  UINT TexId;             /* OpenGL texture Id */ 
+} ve7TEXTURE;
+
+
 typedef struct tagve7MATERIAL
 {
   CHAR Name[VE7_STR_MAX]; /* Material name */
@@ -43,20 +51,26 @@ INT VE7_RndMaterialsSize;                        /* Materials array */
 extern ve7SHADER VE7_RndShaders[VE7_MAX_SHADERS];
 extern INT VE7_RndShadersSize;
 
+#define VE7_MAX_TEXTURES 3000
+extern ve7TEXTURE VE7_RndTextures[VE7_MAX_TEXTURES];
+extern INT VE7_RndTexturesSize;
+
 VOID VE7_RndShdInit( VOID );
-
 VOID VE7_RndShdClose( VOID );
-
 INT VE7_RndShdAdd( CHAR *ShaderFileNamePrefix );
-
 VOID VE7_RndShdUpdate( VOID );
 
 VOID VE7_RndMtlInit( VOID );
-
 VOID VE7_RndMtlClose( VOID );
- 
 INT VE7_RndMtlAdd( ve7MATERIAL *Mtl );
-
 UINT VE7_RndMtlApply( INT MtlNo );
+ve7MATERIAL VE7_RndMtlGetDef( VOID );
+
+VOID VE7_RndTexInit( VOID );
+VOID VE7_RndTexClose( VOID );
+INT VE7_RndTexAddImg( CHAR *Name, INT w, INT h, INT C, VOID *ImageData );
+INT VE7_RndTexAddFromFile( CHAR *FileName );
+
 
 #endif /* __rndres_h_ */
+/*End of file*/

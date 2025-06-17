@@ -15,7 +15,7 @@ INT VE7_RndFrameW, VE7_RndFrameH;
 DBL
   VE7_RndProjSize = 0.1,     /* Project plane fit square */
   VE7_RndProjDist = 0.1,     /* Distance to project plane from viewer (near) */
-  VE7_RndProjFarClip = 300;  /* Distance to project far clip plane (far) */
+  VE7_RndProjFarClip = 3000;  /* Distance to project far clip plane (far) */
  
 MATR
   VE7_RndMatrView, /* View coordinate system matrix */
@@ -25,3 +25,4 @@ MATR
 VEC VE7_RndCamLoc, VE7_RndCamAt, VE7_RndCamDir, VE7_RndCamRight, VE7_RndCamUp;
  
 
+/*End of file*/

@@ -229,14 +229,4 @@ VOID VE7_RndShdUpdate( VOID )
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
+/*End of file*/

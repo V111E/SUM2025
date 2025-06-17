@@ -98,9 +98,11 @@ VOID VE7_RndInit( HWND hWnd )
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_PRIMITIVE_RESTART);
   glPrimitiveRestartIndex(-1);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   VE7_RndResize(30, 30);
-  VE7_RndCamSet(VecSet1(1.8), VecSet(0, 0, 0), VecSet(0, 1, 0));
+  VE7_RndCamSet(VecSet1(180), VecSet(0, 0, 0), VecSet(0, 1, 0));
 
   VE7_RndResInit();
 }
@@ -177,3 +179,5 @@ VOID VE7_RndCamSet( VEC Loc, VEC At, VEC Up )
   VE7_RndCamLoc = Loc;
   VE7_RndCamAt = At;
 }
+
+/*End of file*/

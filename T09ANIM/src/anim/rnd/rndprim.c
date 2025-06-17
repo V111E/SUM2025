@@ -112,7 +112,7 @@ VOID VE7_RndPrimTriMeshAutoNormals( ve7VERTEX *V, INT NumOfV, INT *Ind, INT NumO
 VOID VE7_RndPrimDraw( ve7PRIM *Pr, MATR World )
 {
   INT loc;
-  UINT ProgId = VE7_RndShaders[0].ProgId;
+  UINT ProgId;
   MATR 
     w = MatrMulMatr(Pr->Trans, World),
     winv = MatrTranspose(MatrInverse(w)),
@@ -122,17 +122,19 @@ VOID VE7_RndPrimDraw( ve7PRIM *Pr, MATR World )
                      Pr->Type == VE7_RND_PRIM_TRISTRIP ? GL_TRIANGLE_STRIP :
                      GL_POINTS;
 
-  if (ProgId == 0)
+  if ((ProgId = VE7_RndMtlApply(Pr->MtlNo)) == 0)
     return;
-  glUseProgram(ProgId);
   if ((loc = glGetUniformLocation(ProgId, "MatrWVP")) != -1)
     glUniformMatrix4fv(loc, 1, FALSE, M.A[0]);
   if ((loc = glGetUniformLocation(ProgId, "Time")) != -1)
     glUniform1f(loc, VE7_Anim.Time);
   if ((loc = glGetUniformLocation(ProgId, "MatrW")) != -1)
     glUniformMatrix4fv(loc, 1, FALSE, w.A[0]);
-  if ((loc = glGetUniformLocation(ProgId, "MatrWinv")) != -1)
+  if ((loc = glGetUniformLocation(ProgId, "MatrWInv")) != -1)
     glUniformMatrix4fv(loc, 1, FALSE, winv.A[0]);
+  if ((loc = glGetUniformLocation(ProgId, "CamLoc")) != -1)
+    glUniform3fv(loc, 1, &VE7_RndCamLoc.X);
+
 
   glBindVertexArray(Pr->VA);
   if (Pr->IBuf == 0)
@@ -246,3 +248,4 @@ BOOL VE7_RndPrimLoad( ve7PRIM *Pr, CHAR *FileName )
 
 
 
+/*End of file*/

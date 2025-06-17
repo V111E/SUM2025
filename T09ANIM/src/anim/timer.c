@@ -16,12 +16,7 @@ static UINT64
     TimePerSec,   /* Timer resolution */
     FrameCounter; /* Frames counter */
 
-DBL
-    GlobalTime, GlobalDeltaTime, /* Global time and interframe interval */
-    Time, DeltaTime,             /* Time with pause and interframe interval */
-    FPS;                         /* Frames per second value */
-BOOL
-    IsPause; 
+
 
 VOID VE7_TimerInit( VOID )
 {
@@ -32,8 +27,8 @@ VOID VE7_TimerInit( VOID )
   QueryPerformanceCounter(&t);
   StartTime = OldTime = OldTimeFPS = t.QuadPart;
   FrameCounter = 0;
-  IsPause = FALSE;
-  FPS = 30.0;
+  VE7_Anim.IsPause = FALSE;
+  VE7_Anim.FPS = 30.0;
   PauseTime = 0; 
 }
 
@@ -46,14 +41,14 @@ VOID VE7_TimerResponse( VOID )
   VE7_Anim.GlobalTime = (DBL)(t.QuadPart - StartTime) / TimePerSec;
   VE7_Anim.GlobalDeltaTime = (DBL)(t.QuadPart - OldTime) / TimePerSec;
 
-  if (IsPause)
+  if (VE7_Anim.IsPause)
   {
     VE7_Anim.DeltaTime = 0;
     PauseTime += t.QuadPart - OldTime;
   }
   else
   {
-    VE7_Anim.DeltaTime = GlobalDeltaTime;
+    VE7_Anim.DeltaTime = VE7_Anim.GlobalDeltaTime;
     VE7_Anim.Time = (DBL)(t.QuadPart - PauseTime - StartTime) / TimePerSec;
   }
  
@@ -70,3 +65,4 @@ VOID VE7_TimerResponse( VOID )
 
 
 
+/*End of file*/

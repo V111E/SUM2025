@@ -16,7 +16,6 @@ BOOL VE7_RndGridCreate( ve7GRID *G, INT W, INT H )
   memset(G->V, 0, sizeof(G->V));
   G->W = W;
   G->H = H;
-
   return TRUE;
 }
 
@@ -87,3 +86,4 @@ VOID VE7_RndGridAutoNormals( ve7GRID *G )
     G->V[i].N = VecNormalize(G->V[i].N);
 }
 
+/*End of file*/

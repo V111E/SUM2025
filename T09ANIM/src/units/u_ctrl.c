@@ -25,7 +25,19 @@ static VOID VE7_UnitResponse( ve7UNIT_CTRL *Uni, ve7ANIM *Ani)
     PostMessage(Ani->hWnd, WM_CLOSE, 0, 0);
   if (Ani->KeysClick['P'])
     Ani->IsPause = !Ani->IsPause;
-  if (Ani->KeysClick['W'])
+  if (Ani->KeysClick[VK_F11])
+    VE7_AnimFlipFullScreen();
+  if (Ani->KeysClick['F'])
+    VE7_RndCamSet(VecSet1(100), VecSet1(0), VecSet(0, 1, 0));
+  if (Ani->Keys['A'])
+    Ani->roty += 5;
+  if (Ani->Keys['D'])
+    Ani->roty -= 5;
+  if (Ani->Keys['W'])
+    Ani->rotx += 5;
+  if (Ani->Keys['S'])
+    Ani->rotx -= 5;
+  if (Ani->KeysClick['Q'])
   {
     INT modes[2];
 
@@ -60,15 +72,16 @@ static VOID VE7_UnitResponse( ve7UNIT_CTRL *Uni, ve7ANIM *Ani)
 
     Dist += Ani->GlobalDeltaTime *
       (0.1 * Ani->Mdz +
-       8 * 0.1 * (1 + Ani->Keys[VK_SHIFT] * 30) *
+       80 * 0.1 * (1 + Ani->Keys[VK_SHIFT] * 30) *
           (Ani->Keys[VK_NEXT] - Ani->Keys[VK_PRIOR]));
-     
+    
     if (Elevator < 0.08)
       Elevator = 0.08;
     if (Elevator > 178)
       Elevator = 178;
     if (Dist < 0.1)
       Dist = 0.1;
+    
 
     Wp = VE7_RndProjSize;
     Hp = VE7_RndProjSize;
@@ -118,3 +131,4 @@ ve7UNIT * VE7_UnitCreateCTRL( VOID )
 }
 
 
+/*End of file*/

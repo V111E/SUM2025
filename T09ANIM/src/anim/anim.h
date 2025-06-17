@@ -46,7 +46,7 @@ struct tagve7ANIM
   BYTE KeysClick[256];
   BYTE KeysOld[256];
 
-  INT Mx, My, Mz, Mdx, Mdy, Mdz;
+  INT Mx, My, Mz, Mdx, Mdy, Mdz, rotx, roty;
 };
 
 
@@ -69,3 +69,4 @@ VOID VE7_AnimInputInit( VOID );
 VOID VE7_AnimInputResponse( VOID );
 
 #endif /* __anim_h_ */
+/*End of file*/

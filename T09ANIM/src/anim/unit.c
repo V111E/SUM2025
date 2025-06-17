@@ -41,3 +41,4 @@ ve7UNIT * VE7_AnimUnitCreate( INT Size )
   return Uni;
 } /* End of 'VE7_AnimUnitCreate' function */
 
+/*End of file*/

@@ -48,7 +48,8 @@ VOID VE7_AnimRender( VOID )
   INT i;
 
   VE7_TimerResponse();
-  VE7_AnimInputResponse();
+  if (VE7_Anim.IsActive)
+    VE7_AnimInputResponse();
 
   for (i = 0; i < VE7_Anim.NumOfUnits; i++)
     VE7_Anim.Units[i]->Response(VE7_Anim.Units[i], &VE7_Anim);
@@ -66,7 +67,47 @@ VOID VE7_AnimAddUnit( ve7UNIT *Uni )
     VE7_Anim.Units[VE7_Anim.NumOfUnits++] = Uni, Uni->Init(Uni, &VE7_Anim);
 }
 
-VOID VE7_AnimDoExit( VOID )
+VOID VE7_AnimFlipFullScreen( VOID )
 {
+  static BOOL IsFullScreen = FALSE;
+  static RECT SaveRect;
+ 
+  if (!IsFullScreen)
+  {
+    HMONITOR hmon;
+    MONITORINFO mi;
+    RECT rc;
+
+    GetWindowRect(VE7_Anim.hWnd, &SaveRect);
+
+    hmon = MonitorFromWindow(VE7_Anim.hWnd, MONITOR_DEFAULTTONEAREST);
+    mi.cbSize = sizeof(mi);
+    GetMonitorInfo(hmon, &mi);
+
+    rc = mi.rcMonitor;
+    AdjustWindowRect(&rc, GetWindowLong(VE7_Anim.hWnd, GWL_STYLE), FALSE);
+ 
+    SetWindowPos(VE7_Anim.hWnd, HWND_TOP,
+      rc.left, rc.top,
+      rc.right - rc.left,
+      rc.bottom - rc.top,
+      SWP_NOOWNERZORDER);
+  }
+  else
+  {
+    SetWindowPos(VE7_Anim.hWnd, HWND_TOP,
+      SaveRect.left, SaveRect.top,
+      SaveRect.right - SaveRect.left,
+      SaveRect.bottom - SaveRect.top,
+      SWP_NOOWNERZORDER);
+  }
+  IsFullScreen = !IsFullScreen;
 }
 
+
+VOID VE7_AnimDoExit( VOID )
+{
+  PostMessage(VE7_Anim.hWnd, WM_CLOSE, 0, 0);
+}
+
+/*End of file*/

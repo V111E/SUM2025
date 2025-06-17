@@ -20,3 +20,4 @@ VOID VE7_RndResClose( VOID )
 
 
 
+/*End of file*/
