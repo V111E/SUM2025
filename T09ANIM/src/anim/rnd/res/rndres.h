@@ -71,6 +71,7 @@ VOID VE7_RndTexClose( VOID );
 INT VE7_RndTexAddImg( CHAR *Name, INT w, INT h, INT C, VOID *ImageData );
 INT VE7_RndTexAddFromFile( CHAR *FileName );
 
+ve7MATERIAL * VE7_RndMtlGet( INT MtlNo );
 
 #endif /* __rndres_h_ */
 /*End of file*/

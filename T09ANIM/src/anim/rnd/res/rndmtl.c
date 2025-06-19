@@ -111,6 +111,12 @@ UINT VE7_RndMtlApply( INT MtlNo )
   return prg;
 }
  
+ve7MATERIAL * VE7_RndMtlGet( INT MtlNo )
+{
+  if (MtlNo < 0 || MtlNo >= VE7_RndMaterialsSize)
+    MtlNo = 0;
+  return &VE7_RndMaterials[MtlNo];
 
+}
 
 /*End of file*/

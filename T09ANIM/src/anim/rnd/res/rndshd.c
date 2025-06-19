@@ -152,6 +152,7 @@ static UINT VE7_RndShdLoad( CHAR * FileNamePrefix )
     /* Delete shader program */
     if (prg != 0)
       glDeleteProgram(prg);
+    prg = 0;
   }
   return prg;
 }

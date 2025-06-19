@@ -1,0 +1,21 @@
+default vert
+0(24) : error C7565: assignment to varying 'InTexCoord'
+
+default vert
+0(24) : error C7565: assignment to varying 'InTexCoord'
+
+default vert
+0(24) : error C7565: assignment to varying 'InTexCoord'
+
+default vert
+0(24) : error C7565: assignment to varying 'InTexCoord'
+
+default vert
+0(24) : error C7565: assignment to varying 'InTexCoord'
+
+default vert
+0(24) : error C7565: assignment to varying 'InTexCoord'
+
+default vert
+0(24) : error C7565: assignment to varying 'InTexCoord'
+

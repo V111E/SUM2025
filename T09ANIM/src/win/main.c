@@ -52,9 +52,10 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
   UpdateWindow(hWnd);
 
   /* Add units */
-  VE7_AnimAddUnit(VE7_UnitCreateBall());
+  //VE7_AnimAddUnit(VE7_UnitCreateBall());
   VE7_AnimAddUnit(VE7_UnitCreateCTRL());
   VE7_AnimAddUnit(VE7_UnitCreateGrid());
+  VE7_AnimAddUnit(VE7_UnitCreateModels());
 
   while (TRUE)
     if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))

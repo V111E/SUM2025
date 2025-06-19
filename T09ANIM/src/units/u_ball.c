@@ -28,7 +28,7 @@ static VOID VE7_UnitClose( ve7UNIT_BALL *Uni, ve7ANIM *Ani)
 static VOID VE7_UnitResponse( ve7UNIT_BALL *Uni, ve7ANIM *Ani)
 {
   Uni->Pos.X += Ani->DeltaTime * 0.4;
-
+                                                      
   //if (Ani->KeysClick['P'])
   //  Ani->IsPause = !Ani->IsPause;
   //Uni->CamLoc =

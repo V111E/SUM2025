@@ -38,15 +38,17 @@ struct tagve7ANIM
   DBL
     GlobalTime, GlobalDeltaTime, 
     Time, DeltaTime,             
-    FPS;
+    FPS; 
+    
   BOOL
-    IsPause;
+    IsPause,
+    LookFor;
   
   BYTE Keys[256];
   BYTE KeysClick[256];
   BYTE KeysOld[256];
 
-  INT Mx, My, Mz, Mdx, Mdy, Mdz, rotx, roty;
+  INT Mx, My, Mz, Mdx, Mdy, Mdz, rotx, roty, posx, posy;
 };
 
 
@@ -67,6 +69,7 @@ VOID VE7_TimerResponse( VOID );
 
 VOID VE7_AnimInputInit( VOID );
 VOID VE7_AnimInputResponse( VOID );
+
 
 #endif /* __anim_h_ */
 /*End of file*/

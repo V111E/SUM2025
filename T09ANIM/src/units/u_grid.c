@@ -23,7 +23,7 @@ static VOID VE7_UnitInit( ve7UNIT_GRID *Uni, ve7ANIM *Ani )
   ve7GRID G;
   ve7MATERIAL mtl;
 
-  if ((hBm = LoadImage(NULL, "bin/heights/hf.bmp", IMAGE_BITMAP, 0, 0,
+  if ((hBm = LoadImage(NULL, "bin/heights/race.bmp", IMAGE_BITMAP, 0, 0,
                        LR_LOADFROMFILE | LR_CREATEDIBSECTION)) != NULL)
   {
     GetObject(hBm, sizeof(bm), &bm);
@@ -39,7 +39,7 @@ static VOID VE7_UnitInit( ve7UNIT_GRID *Uni, ve7ANIM *Ani )
         {
           FLT hgt = Bits[(h - 1 - y) * bm.bmWidthBytes + x] / 255.0;
  
-          G.V[y * w + x].P = VecSet(-size /  2 + size * x / (w - 1.0) , 50 * hgt - 20, -size / 2 + size * (1 - y / (h - 1.0)));
+          G.V[y * w + x].P = VecSet(-size /  2 + size * x / (w - 1.0), 50 * hgt - 20, -size / 2 + size * (1 - y / (h - 1.0)));
           G.V[y * w + x].T = Vec2Set(50 * x / (w - 1.0), 50 * (1 - y / (h - 1.0)));
         }
       VE7_RndGridAutoNormals(&G);

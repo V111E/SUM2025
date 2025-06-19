@@ -28,15 +28,19 @@ static VOID VE7_UnitResponse( ve7UNIT_CTRL *Uni, ve7ANIM *Ani)
   if (Ani->KeysClick[VK_F11])
     VE7_AnimFlipFullScreen();
   if (Ani->KeysClick['F'])
-    VE7_RndCamSet(VecSet1(100), VecSet1(0), VecSet(0, 1, 0));
-  if (Ani->Keys['A'])
-    Ani->roty += 5;
-  if (Ani->Keys['D'])
-    Ani->roty -= 5;
-  if (Ani->Keys['W'])
+    VE7_RndCamSet(VecSet(0, 350, -100), VecSet(0, 0, 0), VecSet(0, 2, 0));
+  if (Ani->Keys['J'])
+    Ani->roty += 15;
+  if (Ani->Keys['L'])
+    Ani->roty -= 15;
+  if (Ani->Keys['I'])
     Ani->rotx += 5;
-  if (Ani->Keys['S'])
+  if (Ani->Keys['K'])
     Ani->rotx -= 5;
+
+  if (Ani->KeysClick[VK_SPACE])
+    Ani->LookFor = !Ani->LookFor;
+
   if (Ani->KeysClick['Q'])
   {
     INT modes[2];

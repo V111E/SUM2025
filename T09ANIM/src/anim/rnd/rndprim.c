@@ -111,7 +111,7 @@ VOID VE7_RndPrimTriMeshAutoNormals( ve7VERTEX *V, INT NumOfV, INT *Ind, INT NumO
 
 VOID VE7_RndPrimDraw( ve7PRIM *Pr, MATR World )
 {
-  INT loc;
+  INT loc, i;
   UINT ProgId;
   MATR 
     w = MatrMulMatr(Pr->Trans, World),
@@ -135,6 +135,22 @@ VOID VE7_RndPrimDraw( ve7PRIM *Pr, MATR World )
   if ((loc = glGetUniformLocation(ProgId, "CamLoc")) != -1)
     glUniform3fv(loc, 1, &VE7_RndCamLoc.X);
 
+  //INT VE7_RndShdAddonI[5];
+  //FLT VE7_RndShdAddonF[5];
+
+  for(i = 0; i < 5; i++)
+  {
+    CHAR Name[] = "AddonI0";
+
+    Name[5] = 'I';
+    Name[6] = '0' + i;
+    if ((loc = glGetUniformLocation(ProgId, Name)) != -1)
+      glUniform1i(loc, VE7_RndShdAddonI[i]);
+    Name[5] = 'F';
+    Name[6] = '0' + i;
+    if ((loc = glGetUniformLocation(ProgId, Name)) != -1)
+      glUniform1f(loc, VE7_RndShdAddonF[i]);
+  }
 
   glBindVertexArray(Pr->VA);
   if (Pr->IBuf == 0)

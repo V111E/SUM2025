@@ -30,6 +30,9 @@ extern MATR
 
 extern VEC VE7_RndCamLoc, VE7_RndCamAt, VE7_RndCamDir, VE7_RndCamRight, VE7_RndCamUp;
 
+extern INT VE7_RndShdAddonI[5];
+extern FLT VE7_RndShdAddonF[5];
+
 typedef struct tagve7VERTEX
 {
   VEC P;  
@@ -37,6 +40,7 @@ typedef struct tagve7VERTEX
   VEC N;  
   VEC4 C; 
 } ve7VERTEX;
+
 
 typedef enum tagve7PRIM_TYPE
 {
@@ -65,6 +69,13 @@ typedef struct tagve7GRID
   ve7VERTEX *V;  
 } ve7GRID;
  
+typedef struct tagve7PRIMS
+{
+  INT NumOfPrims; /* Number of primitives in array */  
+  ve7PRIM *Prims; /* Array of primitives */
+  MATR Trans;     /* Common transformation matrix */
+} ve7PRIMS;
+
 
 VOID VE7_RndEnd( VOID );
 
@@ -108,6 +119,17 @@ VOID VE7_RndGridFree( ve7GRID *G );
 VOID VE7_RndPrimFromGrid( ve7PRIM *Pr, ve7GRID *G );
 
 VOID VE7_RndGridAutoNormals( ve7GRID *G );
+
+BOOL VE7_RndPrimsCreate( ve7PRIMS *Prs, INT NumOfPrims );
+
+VOID VE7_RndPrimsFree( ve7PRIMS *Prs );
+
+VOID VE7_RndPrimsDraw( ve7PRIMS *Prs, MATR World );
+
+BOOL VE7_RndPrimsLoad( ve7PRIMS *Pr, CHAR *FileName );
+
+
+
 
 #endif __rnd_h_
 

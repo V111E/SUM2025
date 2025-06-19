@@ -12,6 +12,8 @@
 ve7UNIT * VE7_UnitCreateBall( VOID );
 ve7UNIT * VE7_UnitCreateCTRL( VOID );
 ve7UNIT * VE7_UnitCreateGrid( VOID );
+ve7UNIT * VE7_UnitCreateModels( VOID );
+
 
 #endif /* __units_h_ */
 /*End of file*/
