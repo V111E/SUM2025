@@ -29,9 +29,9 @@ static VOID VE7_UnitResponse( ve7UNIT_CTRL *Uni, ve7ANIM *Ani)
     VE7_AnimFlipFullScreen();
   if (Ani->KeysClick['F'])
     VE7_RndCamSet(VecSet(0, 350, -100), VecSet(0, 0, 0), VecSet(0, 2, 0));
-  if (Ani->Keys['J'])
+  if (Ani->KeysClick['J'])
     Ani->roty += 15;
-  if (Ani->Keys['L'])
+  if (Ani->KeysClick['L'])
     Ani->roty -= 15;
   if (Ani->Keys['I'])
     Ani->rotx += 5;

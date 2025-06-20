@@ -256,6 +256,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\src\anim\rnd\rndprims.c"
+							>
+						</File>
+						<File
 							RelativePath=".\src\anim\rnd\res\rndres.c"
 							>
 						</File>

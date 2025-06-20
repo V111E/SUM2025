@@ -102,7 +102,7 @@ VOID VE7_RndInit( HWND hWnd )
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   VE7_RndResize(30, 30);
-  VE7_RndCamSet(VecSet1(17), VecSet(0, 0, 0), VecSet(0, 1, 0));
+  VE7_RndCamSet(VecSet1(30), VecSet(0, 0, 0), VecSet(0, 1, 0));
 
   VE7_RndResInit();
 }
